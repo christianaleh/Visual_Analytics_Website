@@ -1,0 +1,30 @@
+[
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "take-home-exercise-1.html",
+    "href": "take-home-exercise-1.html",
+    "title": "Take-Home Exercise 1",
+    "section": "",
+    "text": "Task Objective:\nData Source:\nBasis of selection for the 9 Planning areas:"
+  },
+  {
+    "objectID": "take-home-exercise-1.html#data-preparation",
+    "href": "take-home-exercise-1.html#data-preparation",
+    "title": "Take-Home Exercise 1",
+    "section": "Data Preparation",
+    "text": "Data Preparation\n\n\n\n\n\n\n\n\nNo.\nDescription of Step\n\n\n\n\n\n1\nLoad data file\n\nConnect a new data source to Tableau by loading the csv file ‘CSVrespopagesextod2022’ into Tableau prep builders.\nAfter loading the file, the preview of the data would show up according to figure right.\n\nThe following columns should be view-able with the corresponding definitions:\n\nPA : Planning Area, SZ: Subzone, AG: Age group range, Sex, TOD: Type of Development, Pop: Population figure, Time: 2022\n*Since slice of data was taken for June 2022, ‘Time’ column will display the same value throughout the dataset.\n\n\n\n\n2\nData treatment (‘Sex’ column)\n\nSince Males and Females are in the same column, create 2 new columns to clearly identify population numbers for females and males separately.\nRight-click the column ‘Sex’ and locate the command ‘Create Calculated Field’\nCreate a new column named ‘Male’ with the following calculation inserted: see Figure 3. This will identify a new column for populations numbers of Males only.\nRepeat the same calculation to create a second column named ‘Female’\nAt the end of this step, you should have 2 new calculated columns created that should look like Figure 5.\n\n\n\n\nFigure 2"
+  },
+  {
+    "objectID": "take-home-exercise-1.html#creating-the-age-gender-pyramid-in-a-trellis-view",
+    "href": "take-home-exercise-1.html#creating-the-age-gender-pyramid-in-a-trellis-view",
+    "title": "Take-Home Exercise 1",
+    "section": "Creating the Age-Gender Pyramid in a Trellis View",
+    "text": "Creating the Age-Gender Pyramid in a Trellis View\n\n\n\n\n\n\n\n\nNo.\nDescription of Step\n\n\n\n\n\n1\n\nOpen up a new sheet & rename it to ‘Age-Gender Pyramid Trellis’\nDrag the variables ‘PA’ to Columns and ‘AG’ to Rows respectively to produce a table that displays all the 55 PA as column headers and age groups as rows\n\n\n\n\n2\n\nAdd the data that is to be displayed\nDrag the calculated columns ‘Male’ and ‘Female’ to Columns respectively. The Sums of populations for both Male and Female are reported immediately in the form of a bar chart.\nSince ‘Male’ and ‘Female’ population breakdown is reported correspondingly for each Planning area (see example on the right for Ang Mo Kio)\n\n\n\n\n\n3\nSelection of 9 Planning Areas to display\n\nTo limit the 9 areas to display, drag ‘PA’ to the Filters box\nSelect the following 9 Planning Areas in the list to report. As the pre-selection has been set to report all the Planning Areas, click ‘None’ first to de-select all options before selecting the 9.\n\nAng Mo Kio\nBukit Merah\nBukit Timah\nHougang\nJurong East\nKallang\nPasir Ris\nSengkang\n\nThe result should show only the 9 selected planning areas as shown on the right.\n\n\n\n\n\n\n4\nFormatting of the Trellis Chart (Color)\n\nCreate color distinction between ‘Male’ and ‘Female’ populations by doing the following:\n\nUnder the Marks section, navigate to SUM(Male) and change the color of the marks to green. Repeat this step for SUM(Female) to change the color of the marks to pink.\n\n\n\n\n\n\n5\nFormatting of the Trellis Chart (sort AG axis)\n\nSort the y-axis to report the Age groups in descending order. Right-click the AG axis and sort in descending order\n\n\n\n\n6\nFormatting of the Trellis Chart (Pyramid effect)\n\nTo create the pyramid effect, we have the reverse the x-axis of ‘Male’\nRight-click ‘Male’ at the x-axis and click ‘Edit Axis’. Under ‘Scale’, select the ‘Reversed’ option.\nThe final result should cause the pyramid effect (see example for Bukit Merah)\n\n\n\n\n\n7\nFormatting of the Trellis Chart (Enhance visualization)\n\nClick ‘Fit Height’ above the column shelf to re-size the trellis chart to fit the height of the dashboard\nHide row & column header field because the title would already cover this\nRename the Title accordingly to ‘SG Population Age- Gender distribution over 9 Planning Areas (June 2022)’\nUnder ‘Format Lines’ click none under ‘Grid Lines’ for a cleaner look\nFormat and change the size of the PA Font to 14 , in boldface by right-clicking ‘Format’ of PA and making the changes in the Default panel\nLikewise, do the same for the Age-group y-axis by changing the Default font to size 12 and boldface\n\n\n\n\n\n\n\n\n8\nAdding labels to the diagrams\n\nAssuming target audience of the dashboard is on a working level and requires level of detail to each label, add labels for both ‘Male’ and ‘Female’ by dragging both variables to Marks as a Label\nAdjust the color of the font as necessary with format and you should be able to get the figure on the right (example for Bukit Timah)"
+  }
+]

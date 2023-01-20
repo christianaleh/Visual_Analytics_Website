@@ -1,0 +1,150 @@
+---
+title: "Take-Home Exercise 1"
+
+format: html
+tbl-colwidths: [15,85]
+---
+
+Task Objective:
+
+1.  To display the demographic structure of Singapore at the Planning Area Level by using the age-sex pyramid method that is on a single view (Trellis display)
+
+2.  9 Planning areas are to be selected.
+
+Data Source:
+
+-   The dataset used for this task is called 'Singapore Residents by Planning Area/Subzone, Age Group, Sex and Type of Dwelling, June 2022', for which the CSV version was downloaded from the Department of Statistics, Singapore website.
+
+Basis of selection for the 9 Planning areas:
+
+-   From initial observation from the dataset, there are several areas that have low population or 0 population. By cross-refering to Singapore's latest [Map of Planning Areas/Subzones in Singapore](https://www.singstat.gov.sg/-/media/files/publications/population/population2019-map1.pdf) it is observed that areas like 'Boon Lay' contain districts like 'Tukang', 'Liu Fang' etc which are not residential zones.
+
+-   Hence, for effective comparison, planning areas with intuitively denser/popular residential zones were selected.
+
+# **1. Step-by-step Method**
+
+## Data Preparation
+
++-----+--------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------+
+| No. | Description of Step                                                                                                                                                |                                                                                     |
++:===:+====================================================================================================================================================================+:===================================================================================:+
+| 1   | **Load data file**                                                                                                                                                 | ![Figure 1](images/Step1.PNG){alt="Figure 1" width="132.3cm"}                       |
+|     |                                                                                                                                                                    |                                                                                     |
+|     | -   Connect a new data source to Tableau by loading the csv file 'CSVrespopagesextod2022' into Tableau prep builders.                                              |                                                                                     |
+|     |                                                                                                                                                                    |                                                                                     |
+|     | -   After loading the file, the preview of the data would show up according to figure right.                                                                       |                                                                                     |
+|     |                                                                                                                                                                    |                                                                                     |
+|     | The following columns should be view-able with the corresponding definitions:                                                                                      |                                                                                     |
+|     |                                                                                                                                                                    |                                                                                     |
+|     | -   PA : Planning Area, SZ: Subzone, AG: Age group range, Sex, TOD: Type of Development, Pop: Population figure, Time: 2022                                        |                                                                                     |
+|     |                                                                                                                                                                    |                                                                                     |
+|     |     \*Since slice of data was taken for June 2022, 'Time' column will display the same value throughout the dataset.                                               |                                                                                     |
++-----+--------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------+
+| 2   | **Data treatment ('Sex' column)**                                                                                                                                  | ![Figure 2](images/Create_calculated_field_command.PNG){alt="Figure 2" width="500"} |
+|     |                                                                                                                                                                    |                                                                                     |
+|     | -   Since Males and Females are in the same column, create 2 new columns to clearly identify population numbers for females and males separately.                  | ![](images/male_calculation.PNG)                                                    |
+|     |                                                                                                                                                                    |                                                                                     |
+|     | -   Right-click the column 'Sex' and locate the command 'Create Calculated Field'                                                                                  | ![](images/Female_calculation.PNG){width="386"}                                     |
+|     |                                                                                                                                                                    |                                                                                     |
+|     | -   Create a new column named 'Male' with the following calculation inserted: see Figure 3. This will identify a new column for populations numbers of Males only. | ![](images/2newcolumnscreated.PNG){width="135"}                                     |
+|     |                                                                                                                                                                    |                                                                                     |
+|     | -   Repeat the same calculation to create a second column named 'Female'                                                                                           |                                                                                     |
+|     |                                                                                                                                                                    |                                                                                     |
+|     | -   At the end of this step, you should have 2 new calculated columns created that should look like Figure 5.                                                      |                                                                                     |
++-----+--------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------+
+
+## Creating the Age-Gender Pyramid in a Trellis View
+
++-----+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------+
+| No. | Description of Step                                                                                                                                                                                      |                                              |
++:===:+==========================================================================================================================================================================================================+:============================================:+
+| 1   | -   Open up a new sheet & rename it to 'Age-Gender Pyramid Trellis'                                                                                                                                      | ![](images/Add_PAandAG.PNG)                  |
+|     |                                                                                                                                                                                                          |                                              |
+|     | -   Drag the variables 'PA' to Columns and 'AG' to Rows respectively to produce a table that displays all the 55 PA as column headers and age groups as rows                                             |                                              |
++-----+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------+
+| 2   | -   Add the data that is to be displayed                                                                                                                                                                 | ![](images/Drag_male_female.PNG)             |
+|     |                                                                                                                                                                                                          |                                              |
+|     | -   Drag the calculated columns 'Male' and 'Female' to Columns respectively. The Sums of populations for both Male and Female are reported immediately in the form of a bar chart.                       | ![](images/Intiial_AMK.PNG){width="263"}     |
+|     |                                                                                                                                                                                                          |                                              |
+|     | -   Since 'Male' and 'Female' population breakdown is reported correspondingly for each Planning area (see example on the right for Ang Mo Kio)                                                          |                                              |
++-----+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------+
+| 3   | Selection of 9 Planning Areas to display                                                                                                                                                                 | ![](images/PA_tofilter.PNG)                  |
+|     |                                                                                                                                                                                                          |                                              |
+|     | -   To limit the 9 areas to display, drag 'PA' to the Filters box                                                                                                                                        | ![](images/Filter_PA.PNG){width="261"}       |
+|     |                                                                                                                                                                                                          |                                              |
+|     | -   Select the following 9 Planning Areas in the list to report. As the pre-selection has been set to report all the Planning Areas, click 'None' first to de-select all options before selecting the 9. | ![](images/9%20Planning%20areas.PNG)         |
+|     |                                                                                                                                                                                                          |                                              |
+|     |     -   Ang Mo Kio                                                                                                                                                                                       |                                              |
+|     |                                                                                                                                                                                                          |                                              |
+|     |     -   Bukit Merah                                                                                                                                                                                      |                                              |
+|     |                                                                                                                                                                                                          |                                              |
+|     |     -   Bukit Timah                                                                                                                                                                                      |                                              |
+|     |                                                                                                                                                                                                          |                                              |
+|     |     -   Hougang                                                                                                                                                                                          |                                              |
+|     |                                                                                                                                                                                                          |                                              |
+|     |     -   Jurong East                                                                                                                                                                                      |                                              |
+|     |                                                                                                                                                                                                          |                                              |
+|     |     -   Kallang                                                                                                                                                                                          |                                              |
+|     |                                                                                                                                                                                                          |                                              |
+|     |     -   Pasir Ris                                                                                                                                                                                        |                                              |
+|     |                                                                                                                                                                                                          |                                              |
+|     |     -   Sengkang                                                                                                                                                                                         |                                              |
+|     |                                                                                                                                                                                                          |                                              |
+|     | -   The result should show only the 9 selected planning areas as shown on the right.                                                                                                                     |                                              |
++-----+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------+
+| 4   | Formatting of the Trellis Chart (Color)                                                                                                                                                                  | ![](images/Male_Color.PNG){width="177"}      |
+|     |                                                                                                                                                                                                          |                                              |
+|     | -   Create color distinction between 'Male' and 'Female' populations by doing the following:                                                                                                             | ![](images/changedColor_MaleandFemale.PNG)   |
+|     |                                                                                                                                                                                                          |                                              |
+|     |     -   Under the Marks section, navigate to SUM(Male) and change the color of the marks to green. Repeat this step for SUM(Female) to change the color of the marks to pink.                            |                                              |
++-----+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------+
+| 5   | Formatting of the Trellis Chart (sort AG axis)                                                                                                                                                           | ![](images/Sort_descending.PNG){width="237"} |
+|     |                                                                                                                                                                                                          |                                              |
+|     | -   Sort the y-axis to report the Age groups in descending order. Right-click the AG axis and sort in descending order                                                                                   |                                              |
++-----+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------+
+| 6   | Formatting of the Trellis Chart (Pyramid effect)                                                                                                                                                         | ![](images/Reverse_Males.PNG)                |
+|     |                                                                                                                                                                                                          |                                              |
+|     | -   To create the pyramid effect, we have the reverse the x-axis of 'Male'                                                                                                                               | ![](images/Pyramid_effect.PNG)               |
+|     |                                                                                                                                                                                                          |                                              |
+|     | -   Right-click 'Male' at the x-axis and click 'Edit Axis'. Under 'Scale', select the 'Reversed' option.                                                                                                 |                                              |
+|     |                                                                                                                                                                                                          |                                              |
+|     | -   The final result should cause the pyramid effect (see example for Bukit Merah)                                                                                                                       |                                              |
++-----+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------+
+| 7   | Formatting of the Trellis Chart (Enhance visualization)                                                                                                                                                  | ![](images/Fit_height.PNG)                   |
+|     |                                                                                                                                                                                                          |                                              |
+|     | -   Click 'Fit Height' above the column shelf to re-size the trellis chart to fit the height of the dashboard                                                                                            | ![](images/Hide_label.PNG)                   |
+|     |                                                                                                                                                                                                          |                                              |
+|     | -   Hide row & column header field because the title would already cover this                                                                                                                            | ![](images/Hide_label_2.PNG)                 |
+|     |                                                                                                                                                                                                          |                                              |
+|     | -   Rename the Title accordingly to 'SG Population Age- Gender distribution over 9 Planning Areas (June 2022)'                                                                                           | ![](images/Gridlines_format.PNG)             |
+|     |                                                                                                                                                                                                          |                                              |
+|     | -   Under 'Format Lines' click none under 'Grid Lines' for a cleaner look                                                                                                                                | ![](images/FormatPAFont.PNG)                 |
+|     |                                                                                                                                                                                                          |                                              |
+|     | -   Format and change the size of the PA Font to 14 , in boldface by right-clicking 'Format' of PA and making the changes in the Default panel                                                           |                                              |
+|     |                                                                                                                                                                                                          |                                              |
+|     | -   Likewise, do the same for the Age-group y-axis by changing the Default font to size 12 and boldface                                                                                                  |                                              |
++-----+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------+
+| 8   | Adding labels to the diagrams                                                                                                                                                                            | ![](images/AddingLabels.PNG)                 |
+|     |                                                                                                                                                                                                          |                                              |
+|     | -   Assuming target audience of the dashboard is on a working level and requires level of detail to each label, add labels for both 'Male' and 'Female' by dragging both variables to Marks as a Label   |                                              |
+|     |                                                                                                                                                                                                          |                                              |
+|     | -   Adjust the color of the font as necessary with format and you should be able to get the figure on the right (example for Bukit Timah)                                                                |                                              |
++-----+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------+
+
+# 2. Observations from the Dashboard
+
+The following trends were observed after plotting the anecdotal more popular residential areas in Singapore.
+
+In general, the most dense area was found to be Sengkang while the least populated zones were Bukit Timah and Hougang. In terms of Male and Female distribution, it was observed that the differences are not noticeable greater over the other in general but totals of Females were generally higher than Males across all 9 planning areas.
+
+[*Sengkang, an upcoming area for young families*]{.underline}
+
+This area was found to have more than 10K average of the general age range from 35 to 49 years old, which supports the hypothesis that many young families are drawn to live in Sengkang. Correspondingly, the number of young children in the age range of 0 to 19 is also significantly higher compare to the other 8 areas.
+
+[*Hougang as an unexpectedly more mature estate than Ang-Mo Kio and Toa Payoh ?*]{.underline}
+
+While both Ang Mo Kio and Toa Payoh are generally referred to as mature estates the less publicized area of Hougang showed that it had a significantly larger number of older generation residents in the age range of 55 to 74. While the caveat here could be due to Hougang having a larger land size in comparison to Ang Mo Kio and Toa Payoh, a theory behind this could also be due to the lesser amount of development works in Hougang that could have reduced population shifts (or households moving), resulting in many of these older generation to continue staying within the neighborhood.
+
+[*Bukit Timah as a richer residential area*]{.underline}
+
+The data also shows clearly how Bukit Timah has one of the lower populations compared to the rest of the planning areas. This is also not a surprise given that this area is known to be home to a large proportion of landed properties and low-lying areas, which are larger in size compared to HDBs and is hence less densely populated than other areas.

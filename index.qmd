@@ -1,0 +1,12 @@
+---
+title: " ISSS608 Visual Analytics Is Fun"
+
+format: html
+tbl-colwidths: [15,85]
+---
+
+# Welcome !
+
+## This is Christiana's website for all Visual Analytics submissions
+
+![](images/photo_2023-01-20_23-46-00.jpg){width="648"}
