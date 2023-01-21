@@ -9,6 +9,8 @@ website:
       menu: 
         - text: "Take Home Exercise 1"
           href: take-home-exercise-1.qmd
+        - text: "In Class Exercise 2"
+          href: "Hands-On-Exercise/In-class-ex-2.html"
       
     right:
       - href: index.qmd
@@ -20,6 +22,7 @@ format:
     theme: flatly
     css: styles.css
     toc: true
+    font-size: 80%; 
 
 editor: visual
 

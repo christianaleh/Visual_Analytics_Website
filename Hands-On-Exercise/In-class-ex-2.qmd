@@ -1,0 +1,13 @@
+---
+title: "In-Class_Ex-2"
+---
+
+```{r}
+pacman::p_load(tidyverse)
+```
+
+#import data
+
+```{r}
+examdata <- read_csv("data_inclass2/Exam_data.csv")
+```
