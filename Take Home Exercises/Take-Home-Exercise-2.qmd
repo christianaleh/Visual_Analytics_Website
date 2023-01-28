@@ -11,7 +11,7 @@ format:
     code-summary: "Click here for code"
 ---
 
-The following visualization that was created by a peer was used for this critique and makeover exercise. 
+The following visualization that was created by a peer was used for this critique and makeover exercise.
 
 ![](images/Dashboard_Critque.PNG){fig-align="center"}
 
@@ -19,28 +19,32 @@ The following visualization that was created by a peer was used for this critiqu
 
 **Clarity**
 
--   The dashboard initially does not seem to give a clear intention on what the graph is about at first glance because there are three panels present which make it harder to determine which one to look first. 
--   Every bar has been labelled with population values which on closer inspection, makes it harder to read and determine useful information eg. the highest and lowest population figures for both males and females for each planning area. 
--   The use of a single row trellis might not give a very clear comparison view of planning areas of interest because all planning areas are placed side by side. 
+-   The dashboard initially does not seem to give a clear intention on what the graph is about at first glance because there are three panels present which make it harder to determine which one to look first.
+-   Every bar has been labelled with population values which on closer inspection, makes it harder to read and determine useful information eg. the highest and lowest population figures for both males and females for each planning area.
+-   The use of a single row trellis might not give a very clear comparison view of planning areas of interest because all planning areas are placed side by side.
 
 **Aesthetics**
 
-
--   The use of an additional shaded box (grey) is slightly distracting as the main point is not in these shaded boxes or areas. 
+-   The use of an additional shaded box (grey) is slightly distracting as the main point is not in these shaded boxes or areas.
 
 ## Makeover
 
 **Sketch of the Design Remake**
 
+The sketch is as follows:
+
+![](images/Sketch_design.jpg)
 
 **Final Design**
 
--   In this makeover, the trellis diagram featuring 3 X 3 panels is created instead to have a holistic view of all the 9 planning areas and an instant perception of the population distribution for both females and males. The shape and distribution of male and female population compared to other planning areas can now be easier identified. 
--   Labels for each value of Population of each age group was not included and instead a table of the sum of populations for Males and Females respectively for each planning area is also included. 
+-   In this makeover, the trellis diagram featuring 3 X 3 panels is created instead to have a holistic view of all the 9 planning areas and an instant perception of the population distribution for both females and males. The shape and distribution of male and female population compared to other planning areas can now be easier identified.
+-   Labels for each value of Population of each age group was not included and instead a table of the sum of populations for Males and Females respectively for each planning area is also included.
 
 **Remaking visualization via R**
 
-```{r fig.dim = c(14,8), fig.align = 'center'} 
+Loading the packages in R and creating a subset of the desired Planning Areas to visualize.
+
+```{r fig.dim = c(14,8), fig.align = 'center'}
 library(tidyverse)
 library(readr)
 library(dplyr)
@@ -101,9 +105,3 @@ ggp_table <- ggplot() +
 ggp + ggp_table
 
 ```
-
-
-
-
-  
-
