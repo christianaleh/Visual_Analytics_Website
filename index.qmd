@@ -1,6 +1,5 @@
 ---
 title: " ISSS608 Visual Analytics Is Fun"
-
 format: html
 tbl-colwidths: [15,85]
 ---

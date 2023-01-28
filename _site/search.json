@@ -11,7 +11,35 @@
     "href": "Hands-On-Exercise/In-class-ex-2.html",
     "title": "In-Class_Ex-2",
     "section": "",
-    "text": "pacman::p_load(tidyverse)\n\n#import data\n\nexamdata <- read_csv(\"data_inclass2/Exam_data.csv\")\n\nRows: 322 Columns: 7\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \",\"\nchr (4): ID, CLASS, GENDER, RACE\ndbl (3): ENGLISH, MATHS, SCIENCE\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message."
+    "text": "pacman::p_load(tidyverse)\n\n#import data\n\nexamdata <- read_csv(\"data_inclass2/Exam_data.csv\")\n\nRows: 322 Columns: 7\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \",\"\nchr (4): ID, CLASS, GENDER, RACE\ndbl (3): ENGLISH, MATHS, SCIENCE\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.\n\n\npacman::p_load(tidyverse) library(readr) library(dplyr) library(tidyr)"
+  },
+  {
+    "objectID": "In-Class-Exercise/In-Class-Ex-03.html",
+    "href": "In-Class-Exercise/In-Class-Ex-03.html",
+    "title": "In-Class Exercise 3",
+    "section": "",
+    "text": "Installing and loading R packages\n\npacman:: p_load(ggplot2,ggiraph, tidyverse)\n\nImporting data\n\nexam_data <- read_csv(\"data/Exam_data.csv\")\n\n\np <- ggplot(data = exam_data, \n       aes(x = MATHS)) +\n  geom_dotplot_interactive(aes(tooltip = ID), stackgroups = TRUE, binwidth = 1, method = \"histodot\") + \n  scale_y_continuous(NULL, breaks = NULL)\n\ngirafe(\n  ggobj = p,\n  width_svg = 6,\n  height_svg = 6*0.618\n)"
+  },
+  {
+    "objectID": "Take Home Exercises/Take-Home-Exercise-2.html",
+    "href": "Take Home Exercises/Take-Home-Exercise-2.html",
+    "title": "Take-Home-Exercise-2",
+    "section": "",
+    "text": "The following visualization that was created by a peer was used for this critique and makeover exercise."
+  },
+  {
+    "objectID": "Take Home Exercises/Take-Home-Exercise-2.html#critique",
+    "href": "Take Home Exercises/Take-Home-Exercise-2.html#critique",
+    "title": "Take-Home-Exercise-2",
+    "section": "Critique",
+    "text": "Critique\nClarity\n\nThe dashboard initially does not seem to give a clear intention on what the graph is about at first glance because there are three panels present which make it harder to determine which one to look first.\nEvery bar has been labelled with population values which on closer inspection, makes it harder to read and determine useful information eg. the highest and lowest population figures for both males and females for each planning area.\nThe use of a single row trellis might not give a very clear comparison view of planning areas of interest because all planning areas are placed side by side.\n\nAesthetics\n\nThe use of an additional shaded box (grey) is slightly distracting as the main point is not in these shaded boxes or areas."
+  },
+  {
+    "objectID": "Take Home Exercises/Take-Home-Exercise-2.html#makeover",
+    "href": "Take Home Exercises/Take-Home-Exercise-2.html#makeover",
+    "title": "Take-Home-Exercise-2",
+    "section": "Makeover",
+    "text": "Makeover\nSketch of the Design Remake\nFinal Design\n\nIn this makeover, the trellis diagram featuring 3 X 3 panels is created instead to have a holistic view of all the 9 planning areas and an instant perception of the population distribution for both females and males. The shape and distribution of male and female population compared to other planning areas can now be easier identified.\nLabels for each value of Population of each age group was not included and instead a table of the sum of populations for Males and Females respectively for each planning area is also included.\n\nRemaking visualization via R\n\n\nClick here for code\nlibrary(tidyverse)\nlibrary(readr)\nlibrary(dplyr)\nlibrary(tidyr)\nlibrary(ggplot2)\nlibrary(lattice)\nlibrary(knitr)\nlibrary(patchwork)\nlibrary(ggpmisc)\n\n#import data \ndata <- read_csv(\"CSVrespopagesextod2022.csv\")\n\n#create subset of data with 9 selected planning areas \ndata1 <- data[data$PA %in% c('Ang Mo Kio', 'Bukit Merah', 'Bukit Timah', 'Hougang', 'Jurong East', 'Kallang', 'Pasir Ris','Sengkang', 'Toa Payoh'),] \nsubset(data, PA %in% c('Ang Mo Kio', 'Bukit Merah', 'Bukit Timah', 'Hougang', 'Jurong East', 'Kallang', 'Pasir Ris','Sengkang', 'Toa Payoh'))\n\n\n# A tibble: 28,576 × 7\n   PA         SZ                     AG     Sex     TOD                Pop  Time\n   <chr>      <chr>                  <chr>  <chr>   <chr>            <dbl> <dbl>\n 1 Ang Mo Kio Ang Mo Kio Town Centre 0_to_4 Males   HDB 1- and 2-Ro…     0  2022\n 2 Ang Mo Kio Ang Mo Kio Town Centre 0_to_4 Males   HDB 3-Room Flats    10  2022\n 3 Ang Mo Kio Ang Mo Kio Town Centre 0_to_4 Males   HDB 4-Room Flats    10  2022\n 4 Ang Mo Kio Ang Mo Kio Town Centre 0_to_4 Males   HDB 5-Room and …    30  2022\n 5 Ang Mo Kio Ang Mo Kio Town Centre 0_to_4 Males   HUDC Flats (exc…     0  2022\n 6 Ang Mo Kio Ang Mo Kio Town Centre 0_to_4 Males   Condominiums an…    50  2022\n 7 Ang Mo Kio Ang Mo Kio Town Centre 0_to_4 Males   Landed Properti…     0  2022\n 8 Ang Mo Kio Ang Mo Kio Town Centre 0_to_4 Males   Others               0  2022\n 9 Ang Mo Kio Ang Mo Kio Town Centre 0_to_4 Females HDB 1- and 2-Ro…     0  2022\n10 Ang Mo Kio Ang Mo Kio Town Centre 0_to_4 Females HDB 3-Room Flats     0  2022\n# … with 28,566 more rows\n\n\nClick here for code\n#set factor variable for AG \ndata1$AG <- factor(data1$AG, levels =c(\"0_to_4\", \"5_to_9\", \"10_to_14\", \"15_to_19\", \"20_to_24\", \"25_to_29\", \"30_to_34\", \"35_to_39\", \"40_to_44\",\"45_to_49\", \"50_to_54\", \"55_to_59\", \"60_to_64\", \"65_to_69\", \"70_to_74\", \"75_to_79\", \"80_to_84\", \"85_to_89\", \"90_and_over\"))\n\n#create barchart \nm_f_pyramid <- data1 %>%\n  mutate(\n    Pop = case_when(\n      Sex == \"Males\" ~ -Pop, \n      TRUE ~ Pop\n    ),\n    AG = as_factor(AG)\n  )\n  \nggp<- ggplot(m_f_pyramid ,\n        aes(x = Pop, \n            y = AG,\n            fill = Sex)) + \n    geom_col() + \n    scale_x_continuous(breaks = c(-150000, -10000, -5000, 0, 5000, 10000, 15000), labels = scales::comma(abs(c(-150000, -10000, -5000, 0, 5000, 10000, 15000)))) +\n    scale_fill_brewer(palette = \"Dark2\") + \n    theme_minimal() + \n    theme(legend.position = \"top\") + \n    facet_wrap(~PA, ncol = 3) + \n    ggtitle(\"Comparison of Male and Female Population in SG (June 2022)\") +\n    theme_minimal() +\n    theme(plot.title = element_text(hjust = 0.5)) +\n    labs(y =\"Age range\", x = \"Population figures\")\n\n#create table for summary statistics\ntbl1 <- data1 %>%\n          group_by(PA, Sex) %>%\n          summarise(sum = sum(Pop), .groups = 'drop')\n\nggp_table <- ggplot() +                             \n  theme_void() +\n  annotate(geom = \"table\",\n           x = 1,\n           y = 1,\n           label = list(tbl1))\n\nggp + ggp_table"
   },
   {
     "objectID": "take-home-exercise-1.html",

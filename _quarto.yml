@@ -11,7 +11,12 @@ website:
           href: take-home-exercise-1.qmd
         - text: "In Class Exercise 2"
           href: "Hands-On-Exercise/In-class-ex-2.html"
-      
+        - text: "Take Home Exercise 2"
+          href: "Take Home Exercises/Take-home-Exercise-2.html"
+    - text: "In Class Exercises"
+      menu:
+        - text: "In Class Exercise 3"
+          href: "In-Class-Exercise/In-Class-Ex-03.html"
     right:
       - href: index.qmd
         text: Home

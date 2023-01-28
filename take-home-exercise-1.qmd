@@ -1,6 +1,7 @@
 ---
 title: "Take-Home Exercise 1"
-
+author: Christiana Lim 
+date: "`r Sys.Date()`"
 format: html
 tbl-colwidths: [15,85]
 ---

@@ -1,0 +1,109 @@
+---
+title: "Take-Home-Exercise-2"
+author: Christiana Lim 
+date: "`r Sys.Date()`"
+execute: 
+  warning: false
+format:
+  html:
+    page-layout: full
+    code-fold: true
+    code-summary: "Click here for code"
+---
+
+The following visualization that was created by a peer was used for this critique and makeover exercise. 
+
+![](images/Dashboard_Critque.PNG){fig-align="center"}
+
+## Critique
+
+**Clarity**
+
+-   The dashboard initially does not seem to give a clear intention on what the graph is about at first glance because there are three panels present which make it harder to determine which one to look first. 
+-   Every bar has been labelled with population values which on closer inspection, makes it harder to read and determine useful information eg. the highest and lowest population figures for both males and females for each planning area. 
+-   The use of a single row trellis might not give a very clear comparison view of planning areas of interest because all planning areas are placed side by side. 
+
+**Aesthetics**
+
+
+-   The use of an additional shaded box (grey) is slightly distracting as the main point is not in these shaded boxes or areas. 
+
+## Makeover
+
+**Sketch of the Design Remake**
+
+
+**Final Design**
+
+-   In this makeover, the trellis diagram featuring 3 X 3 panels is created instead to have a holistic view of all the 9 planning areas and an instant perception of the population distribution for both females and males. The shape and distribution of male and female population compared to other planning areas can now be easier identified. 
+-   Labels for each value of Population of each age group was not included and instead a table of the sum of populations for Males and Females respectively for each planning area is also included. 
+
+**Remaking visualization via R**
+
+```{r fig.dim = c(14,8), fig.align = 'center'} 
+library(tidyverse)
+library(readr)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(lattice)
+library(knitr)
+library(patchwork)
+library(ggpmisc)
+
+#import data 
+data <- read_csv("CSVrespopagesextod2022.csv")
+
+#create subset of data with 9 selected planning areas 
+data1 <- data[data$PA %in% c('Ang Mo Kio', 'Bukit Merah', 'Bukit Timah', 'Hougang', 'Jurong East', 'Kallang', 'Pasir Ris','Sengkang', 'Toa Payoh'),] 
+subset(data, PA %in% c('Ang Mo Kio', 'Bukit Merah', 'Bukit Timah', 'Hougang', 'Jurong East', 'Kallang', 'Pasir Ris','Sengkang', 'Toa Payoh'))
+
+#set factor variable for AG 
+data1$AG <- factor(data1$AG, levels =c("0_to_4", "5_to_9", "10_to_14", "15_to_19", "20_to_24", "25_to_29", "30_to_34", "35_to_39", "40_to_44","45_to_49", "50_to_54", "55_to_59", "60_to_64", "65_to_69", "70_to_74", "75_to_79", "80_to_84", "85_to_89", "90_and_over"))
+
+#create barchart 
+m_f_pyramid <- data1 %>%
+  mutate(
+    Pop = case_when(
+      Sex == "Males" ~ -Pop, 
+      TRUE ~ Pop
+    ),
+    AG = as_factor(AG)
+  )
+  
+ggp<- ggplot(m_f_pyramid ,
+        aes(x = Pop, 
+            y = AG,
+            fill = Sex)) + 
+    geom_col() + 
+    scale_x_continuous(breaks = c(-150000, -10000, -5000, 0, 5000, 10000, 15000), labels = scales::comma(abs(c(-150000, -10000, -5000, 0, 5000, 10000, 15000)))) +
+    scale_fill_brewer(palette = "Dark2") + 
+    theme_minimal() + 
+    theme(legend.position = "top") + 
+    facet_wrap(~PA, ncol = 3) + 
+    ggtitle("Comparison of Male and Female Population in SG (June 2022)") +
+    theme_minimal() +
+    theme(plot.title = element_text(hjust = 0.5)) +
+    labs(y ="Age range", x = "Population figures")
+
+#create table for summary statistics
+tbl1 <- data1 %>%
+          group_by(PA, Sex) %>%
+          summarise(sum = sum(Pop), .groups = 'drop')
+
+ggp_table <- ggplot() +                             
+  theme_void() +
+  annotate(geom = "table",
+           x = 1,
+           y = 1,
+           label = list(tbl1))
+
+ggp + ggp_table
+
+```
+
+
+
+
+  
+
