@@ -5,18 +5,24 @@ website:
   title: "Visual Analytics"
   navbar:
     left:
-    - text: "Exercises"
+    - text: "Take-Home Exercises"
       menu: 
         - text: "Take Home Exercise 1"
           href: take-home-exercise-1.qmd
-        - text: "In Class Exercise 2"
-          href: "Hands-On-Exercise/In-class-ex-2.html"
         - text: "Take Home Exercise 2"
           href: "Take Home Exercises/Take-home-Exercise-2.html"
+    - text: "Hands On Exercises"
+      menu: 
+        - text: "Hands On Exercise 3"
+          href: "Hands-On-Exercise/Hands_On_Exercise_3.html"
     - text: "In Class Exercises"
       menu:
+        - text: "In Class Exercise 2"
+          href: "Hands-On-Exercise/In-class-ex-2.html"
         - text: "In Class Exercise 3"
           href: "In-Class-Exercise/In-Class-Ex-03.html"
+        - text: "In Class Exercise 4"
+          href: "In-Class-Exercise/In-Class-Ex-04.html"
     right:
       - href: index.qmd
         text: Home
