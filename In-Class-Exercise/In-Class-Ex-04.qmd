@@ -10,7 +10,7 @@ editor: visual
 ---
 
 ```{r}
-pacman::p_load(plotly, DT, patchwork, tidyverse, ggstatsplot, readxl, performance, parameters, see, gtsummary)
+pacman::p_load(plotly, DT, patchwork, tidyverse, ggstatsplot, readxl, performance, parameters, see, gtsummary, crosstalk, ggdist, gganimate)
 ```
 
 ```{r}
@@ -86,4 +86,38 @@ Presenting the summary of Model with the characteristic, beta, CI and p-value.
 tbl_regression(model1, intercept = TRUE)
 
 check_model(model1)
+```
+
+```{r}
+my_sum <- exam_data %>%
+  group_by(RACE) %>%
+  summarise(
+    n=n(),
+    mean=mean(MATHS),
+    sd=sd(MATHS)
+    ) %>%
+  mutate(se=sd/sqrt(n-1))
+```
+
+### Visualizing the uncertainty of point estimates: ggplot2 methods
+
+```{r}
+ggplot(my_sum) +
+  geom_errorbar(
+    aes(x=RACE, 
+        ymin=mean-se, 
+        ymax=mean+se), 
+    width=0.2, 
+    colour="black", 
+    alpha=0.9, 
+    size=0.5) +
+  geom_point(aes
+           (x=RACE, 
+            y=mean), 
+           stat="identity", 
+           color="red",
+           size = 1.5,
+           alpha=1) +
+  ggtitle("Standard error of mean 
+          maths score by rac")
 ```
