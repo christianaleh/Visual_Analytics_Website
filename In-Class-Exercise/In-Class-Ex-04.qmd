@@ -1,7 +1,6 @@
 ---
 title: "In Class Exercise 4"
 date: "4 Feb 2023"
-date-modified: "'r System.Date()"
 execute: 
   echo: true
   eval: true

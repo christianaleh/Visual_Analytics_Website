@@ -1,0 +1,41 @@
+---
+title: "Hands On Exercise 05"
+date: "11 Feb 2023"
+execute: 
+  echo: true
+  eval: true
+  warning: false
+---
+
+```{r}
+pacman::p_load(tidyverse, corrplot, ggstatsplot, ggcorrplot, ggtern, seriation, dendextend, heatmaply, GGally, parallelPlot)
+```
+
+```{r}
+wine <- read_csv("data_inclass2/wine_quality.csv")
+```
+
+```{r}
+pairs(wine[,1:11]) #from base r graphics package that helps to create scatterplot, creates factor levels in categorical data 
+```
+
+```{r}
+wh <- read_csv("data_inclass2/WHData-2018.csv")
+```
+
+```{r}
+row.names(wh) <- wh$Country
+wh1 <- dplyr::select(wh, c(3, 7:12))
+wh_matrix <- data.matrix(wh)
+
+wh_heatmap <- heatmap(wh_matrix,
+                      Rowv=NA, Colv=NA)
+```
+
+```{r}
+wh <- wh %>%
+  select("Happiness score", c(7:12))
+parallelPlot(wh,
+             width = 320,
+             height = 250)
+```

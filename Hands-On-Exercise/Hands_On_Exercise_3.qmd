@@ -1,7 +1,6 @@
 ---
 title: "Hands_On_Exercise_3"
-author: Christiana Lim 
-date: "`r Sys.Date()`"
+author: Christiana Lim
 execute: 
   echo: true
   eval: true

@@ -1,14 +1,11 @@
 ---
 title: "Take-Home-Exercise-2"
-author: Christiana Lim 
-date: "`r Sys.Date()`"
-execute: 
+author: Christiana Lim
+execute:
   warning: false
-format:
-  html:
+format: 
+  html: 
     page-layout: full
-    code-fold: true
-    code-summary: "Click here for code"
 ---
 
 The following visualization that was created by a peer was used for this critique and makeover exercise.

@@ -7,7 +7,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Christiana Lim">
-<meta name="dcterms.date" content="2023-02-04">
 
 <title>Visual Analytics - Take-Home-Exercise-2</title>
 <style>
@@ -157,6 +156,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <a class="dropdown-item" href="../Take Home Exercises/Take-home-Exercise-2.html">
  <span class="dropdown-text">Take Home Exercise 2</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../Take Home Exercises/Take-home-Exercise-3.html">
+ <span class="dropdown-text">Take Home Exercise 3</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -167,6 +170,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         <li>
     <a class="dropdown-item" href="../Hands-On-Exercise/Hands_On_Exercise_3.html">
  <span class="dropdown-text">Hands On Exercise 3</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../Hands-On-Exercise/Hands_On_Exercise_5.html">
+ <span class="dropdown-text">Hands On Exercise 5</span></a>
   </li>  
     </ul>
   </li>
@@ -238,12 +245,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
   </div>
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">February 4, 2023</p>
-    </div>
-  </div>
   
     
   </div>
@@ -283,8 +284,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><strong>Remaking visualization via R</strong></p>
 <p>Loading the packages in R and creating a subset of the desired Planning Areas to visualize.</p>
 <div class="cell" data-layout-align="center" data-fig.dim="[14,8]">
-<details>
-<summary>Click here for code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
@@ -301,7 +300,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">#create subset of data with 9 selected planning areas </span></span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>data1 <span class="ot">&lt;-</span> data[data<span class="sc">$</span>PA <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">'Ang Mo Kio'</span>, <span class="st">'Bukit Merah'</span>, <span class="st">'Bukit Timah'</span>, <span class="st">'Hougang'</span>, <span class="st">'Jurong East'</span>, <span class="st">'Kallang'</span>, <span class="st">'Pasir Ris'</span>,<span class="st">'Sengkang'</span>, <span class="st">'Toa Payoh'</span>),] </span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">subset</span>(data, PA <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">'Ang Mo Kio'</span>, <span class="st">'Bukit Merah'</span>, <span class="st">'Bukit Timah'</span>, <span class="st">'Hougang'</span>, <span class="st">'Jurong East'</span>, <span class="st">'Kallang'</span>, <span class="st">'Pasir Ris'</span>,<span class="st">'Sengkang'</span>, <span class="st">'Toa Payoh'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 28,576 × 7
    PA         SZ                     AG     Sex     TOD                Pop  Time
@@ -318,8 +316,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 10 Ang Mo Kio Ang Mo Kio Town Centre 0_to_4 Females HDB 3-Room Flats     0  2022
 # … with 28,566 more rows</code></pre>
 </div>
-<details>
-<summary>Click here for code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#set factor variable for AG </span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>data1<span class="sc">$</span>AG <span class="ot">&lt;-</span> <span class="fu">factor</span>(data1<span class="sc">$</span>AG, <span class="at">levels =</span><span class="fu">c</span>(<span class="st">"0_to_4"</span>, <span class="st">"5_to_9"</span>, <span class="st">"10_to_14"</span>, <span class="st">"15_to_19"</span>, <span class="st">"20_to_24"</span>, <span class="st">"25_to_29"</span>, <span class="st">"30_to_34"</span>, <span class="st">"35_to_39"</span>, <span class="st">"40_to_44"</span>,<span class="st">"45_to_49"</span>, <span class="st">"50_to_54"</span>, <span class="st">"55_to_59"</span>, <span class="st">"60_to_64"</span>, <span class="st">"65_to_69"</span>, <span class="st">"70_to_74"</span>, <span class="st">"75_to_79"</span>, <span class="st">"80_to_84"</span>, <span class="st">"85_to_89"</span>, <span class="st">"90_and_over"</span>))</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -361,7 +357,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">list</span>(tbl1))</span>
 <span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>ggp <span class="sc">+</span> ggp_table</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">

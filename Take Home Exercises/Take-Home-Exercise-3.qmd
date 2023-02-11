@@ -1,0 +1,27 @@
+---
+title: "Take Home Exercise 03"
+author: Christiana Lim
+date: "10 Feb 2023"
+execute: 
+  warning: false
+format: 
+  html: 
+    page-layout: full
+---
+
+# Method and Approach
+
+XXX Describe the selection and the consideration of analytic data visualization used:
+
+Description of procedures used to prepare the visualization.
+
+# **Preparing the Visualizations**
+
+```{r}
+pacman::p_load(plotly, DT, patchwork, tidyverse, ggstatsplot, readxl, performance, parameters, see, gtsummary, crosstalk, ggdist, gganimate)
+
+```
+
+```{r}
+resale_flat <- read_csv("resale-flat-prices/resale-flat-prices-based-on-registration-date-from-jan-2017-onwards.csv")
+```
