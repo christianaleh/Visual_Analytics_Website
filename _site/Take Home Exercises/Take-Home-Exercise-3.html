@@ -227,14 +227,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
    
   <ul>
   <li><a href="#dataset-and-preparation" id="toc-dataset-and-preparation" class="nav-link active" data-scroll-target="#dataset-and-preparation">Dataset and Preparation</a></li>
-  <li><a href="#method-and-approach" id="toc-method-and-approach" class="nav-link" data-scroll-target="#method-and-approach">Method and Approach</a></li>
+  <li><a href="#approach-and-method" id="toc-approach-and-method" class="nav-link" data-scroll-target="#approach-and-method">Approach and Method</a></li>
   <li><a href="#preparing-the-visualizations" id="toc-preparing-the-visualizations" class="nav-link" data-scroll-target="#preparing-the-visualizations"><strong>Preparing the Visualizations</strong></a>
   <ul class="collapse">
-  <li><a href="#a-how-does-the-resale-price-vary-with-the-remaining-lease-years-in-general" id="toc-a-how-does-the-resale-price-vary-with-the-remaining-lease-years-in-general" class="nav-link" data-scroll-target="#a-how-does-the-resale-price-vary-with-the-remaining-lease-years-in-general"><strong>(A) How does the resale price vary with the remaining lease years in general?</strong></a></li>
-  <li><a href="#b-does-the-time-of-the-year-affect-the-resale-price-of-flats-in-a-town" id="toc-b-does-the-time-of-the-year-affect-the-resale-price-of-flats-in-a-town" class="nav-link" data-scroll-target="#b-does-the-time-of-the-year-affect-the-resale-price-of-flats-in-a-town"><strong>(B) Does the time of the year affect the resale price of flats in a town?</strong></a></li>
+  <li><a href="#a-does-resale-price-have-a-linear-relationship-with-remaining-lease-months" id="toc-a-does-resale-price-have-a-linear-relationship-with-remaining-lease-months" class="nav-link" data-scroll-target="#a-does-resale-price-have-a-linear-relationship-with-remaining-lease-months"><strong>(A) Does resale price have a linear relationship with remaining lease months?</strong></a></li>
+  <li><a href="#b-is-resale-price-affected-by-the-month-of-the-year" id="toc-b-is-resale-price-affected-by-the-month-of-the-year" class="nav-link" data-scroll-target="#b-is-resale-price-affected-by-the-month-of-the-year"><strong>(B) Is resale price affected by the month of the year?</strong></a></li>
   <li><a href="#c-does-the-storey-eg.-higher-vs-lower-floors-matter-and-affect-the-resale-price" id="toc-c-does-the-storey-eg.-higher-vs-lower-floors-matter-and-affect-the-resale-price" class="nav-link" data-scroll-target="#c-does-the-storey-eg.-higher-vs-lower-floors-matter-and-affect-the-resale-price"><strong>(C) Does the storey (eg. higher vs lower floors) matter and affect the resale price?</strong></a></li>
   <li><a href="#d-can-a-model-of-factors-that-influence-price-be-built" id="toc-d-can-a-model-of-factors-that-influence-price-be-built" class="nav-link" data-scroll-target="#d-can-a-model-of-factors-that-influence-price-be-built"><strong>(D) Can a model of factors that influence price be built?</strong></a></li>
   </ul></li>
+  <li><a href="#summary-of-findings" id="toc-summary-of-findings" class="nav-link" data-scroll-target="#summary-of-findings">Summary of Findings</a></li>
   </ul>
 </nav>
     </div>
@@ -267,7 +268,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">February 14, 2023</p>
+      <p class="date-modified">February 15, 2023</p>
     </div>
   </div>
     
@@ -282,8 +283,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Upon checking the dataset, the following columns are available to be used in the analysis:</p>
 <table class="table">
 <colgroup>
-<col style="width: 33%">
-<col style="width: 66%">
+<col style="width: 34%">
+<col style="width: 65%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -338,8 +339,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<p>In order to use the data provided more effectively, the following cleaning steps were done using Excel:</p>
+<p>In order to use the data provided more effectively, the following cleaning steps and variable conversions were done using Excel first before application in R to extract and apply the variables in the visualization.</p>
 <table class="table">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 21%">
+<col style="width: 67%">
+</colgroup>
 <thead>
 <tr class="header">
 <th>S/N</th>
@@ -349,34 +355,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </thead>
 <tbody>
 <tr class="odd">
-<td></td>
-<td></td>
-<td></td>
+<td>1</td>
+<td>month</td>
+<td>Split the year and the month into 2 new columns for easier reference to the time period ‘month’</td>
 </tr>
 <tr class="even">
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td></td>
-<td></td>
-<td></td>
+<td>2</td>
+<td>remaining_lease</td>
+<td>Transformed to months instead of years and months and renamed variable to ‘remaining_lease_months’</td>
 </tr>
 </tbody>
 </table>
 </section>
-<section id="method-and-approach" class="level1">
-<h1>Method and Approach</h1>
-<p><code>XXX Describe the selection and the consideration of analytic data visualization used:</code></p>
-<p>Questions that the visualization with try to answer:</p>
+<section id="approach-and-method" class="level1">
+<h1>Approach and Method</h1>
+<p>This analytical visualization will attempt to answer the following questions:</p>
 <ol type="1">
-<li><p>How does the resale price vary with the remaining lease years in general?</p></li>
-<li><p>Does the time of the year affect the resale price of flats in a town?</p></li>
+<li><p>Does resale price have a linear relationship with remaining lease months?</p></li>
+<li><p>Is resale price affected by the month of the year?</p></li>
 <li><p>Does the storey (eg. higher vs lower floors) matter and affect the resale price?</p></li>
 <li><p>Can a model of factors that influence price be built?</p></li>
 </ol>
-<p>For data cleaning, excel and R was used to extract and convert the variables to be prepared for visualization.</p>
 </section>
 <section id="preparing-the-visualizations" class="level1">
 <h1><strong>Preparing the Visualizations</strong></h1>
@@ -389,9 +388,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter for Y2022 data only </span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>resale_flat <span class="ot">&lt;-</span> <span class="fu">filter</span>(data, year <span class="sc">==</span> <span class="dv">2022</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="a-how-does-the-resale-price-vary-with-the-remaining-lease-years-in-general" class="level2">
-<h2 class="anchored" data-anchor-id="a-how-does-the-resale-price-vary-with-the-remaining-lease-years-in-general"><strong>(A) How does the resale price vary with the remaining lease years in general?</strong></h2>
-<p>To examine this, we apply the visual for significant test of correlation between the resale flat prices and the remaining lease months to see if there is a relationship. Using R, ggscatterstats can be used to obtain the correlation plot between resale flat prices and remaining lease months directly.</p>
+<section id="a-does-resale-price-have-a-linear-relationship-with-remaining-lease-months" class="level2">
+<h2 class="anchored" data-anchor-id="a-does-resale-price-have-a-linear-relationship-with-remaining-lease-months"><strong>(A) Does resale price have a linear relationship with remaining lease months?</strong></h2>
+<p>To examine this, we apply the visualization for significant test of correlation between the resale flat prices and the remaining lease months variable to see if there is a relationship. Using R, <code>ggscatterstats</code> can be used to obtain the correlation plot between resale flat prices and remaining lease months directly.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggscatterstats</span>(</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> resale_flat, </span>
@@ -406,9 +405,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </section>
-<section id="b-does-the-time-of-the-year-affect-the-resale-price-of-flats-in-a-town" class="level2">
-<h2 class="anchored" data-anchor-id="b-does-the-time-of-the-year-affect-the-resale-price-of-flats-in-a-town"><strong>(B) Does the time of the year affect the resale price of flats in a town?</strong></h2>
-<p>To answer this question, we first plot multi-ridge plots to determine the resale flat price distribution across town areas.</p>
+<section id="b-is-resale-price-affected-by-the-month-of-the-year" class="level2">
+<h2 class="anchored" data-anchor-id="b-is-resale-price-affected-by-the-month-of-the-year"><strong>(B) Is resale price affected by the month of the year?</strong></h2>
+<p>To answer this question, we first plot multi-ridge plots to determine the resale flat price distribution across town areas to have an idea of how different they could be.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(resale_flat,</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> resale_price, <span class="at">y =</span> town, <span class="at">fill =</span>town)) <span class="sc">+</span></span>
@@ -421,15 +420,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="Take-Home-Exercise-3_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<p>This is followed by plotting a stacked bar plot across the months in Y2022 to visualize the distribution of Resale Price according to the town areas.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(resale_flat, </span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span><span class="fu">as.factor</span>(month), resale_price, <span class="at">color =</span> town)) <span class="sc">+</span> </span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span> </span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Months of the Year"</span>, <span class="at">y =</span> <span class="st">"Resale Flat Price"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Months of the Year 2022"</span>, <span class="at">y =</span> <span class="st">"Resale Flat Price"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Take-Home-Exercise-3_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<p>Following which, to determine if there are significant differences between groups (ie months), we perfrom the oneway ANOVA test using <code>ggbetweenstats</code> for non-parametric (assume unknown and unequal variance).</p>
 <div class="cell" data-fig.dim="[8,6]">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggbetweenstats</span>(</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> resale_flat,</span>
@@ -445,18 +446,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="c-does-the-storey-eg.-higher-vs-lower-floors-matter-and-affect-the-resale-price" class="level2">
 <h2 class="anchored" data-anchor-id="c-does-the-storey-eg.-higher-vs-lower-floors-matter-and-affect-the-resale-price"><strong>(C) Does the storey (eg. higher vs lower floors) matter and affect the resale price?</strong></h2>
-<p>To observe the distribution of the prices, a bar plot diagram is used to check the distribution. For this, we apply</p>
-<div class="cell">
+<p>To observe the distribution of the prices, a bar plot diagram is used to check the distribution. For this, we apply <code>ggplot's barplot</code> to have an idea of the mean resale price trend across the different storey_ranges.</p>
+<div class="cell" data-fig.dim="[12,10]">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(resale_flat, </span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span><span class="fu">as.factor</span>(storey_range), <span class="at">y =</span> <span class="fu">mean</span>(resale_price), <span class="at">color =</span> storey_range)) <span class="sc">+</span> </span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span> </span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Storey Range"</span>, <span class="at">y =</span> <span class="st">"Resale Flat Price"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span>storey_range, <span class="at">y =</span> resale_price, <span class="at">color =</span> storey_range)) <span class="sc">+</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">"dodge"</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">stat =</span> <span class="st">"summary"</span>, </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">fun =</span> <span class="st">"mean"</span>) <span class="sc">+</span> </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Storey Range"</span>, <span class="at">y =</span> <span class="st">"Resale Flat Price"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Take-Home-Exercise-3_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+<p><img src="Take-Home-Exercise-3_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="1152"></p>
 </div>
 </div>
 <p>Oneway ANOVA Test was conducted between storey ranges and the resale price using ggbetweenstats.</p>
-<div class="cell" data-fig.dim="[8,6]">
+<div class="cell" data-fig.dim="[10,8]">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggbetweenstats</span>(</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> resale_flat,</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> storey_range, </span>
@@ -469,34 +472,33 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">messages =</span> <span class="cn">FALSE</span></span>
 <span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Take-Home-Exercise-3_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="768"></p>
+<p><img src="Take-Home-Exercise-3_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> resale_flat, </span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>       (<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(storey_range), <span class="at">y =</span> resale_price))) <span class="sc">+</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">position =</span> <span class="fu">position_jitter</span>(</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">height =</span> <span class="fl">0.3</span>, </span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">width =</span> <span class="fl">0.05</span>), </span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">0.4</span>, <span class="at">color =</span> <span class="st">"#0072B2"</span>, <span class="at">alpha =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hpline</span>(<span class="at">data =</span> <span class="fu">sampler</span>(<span class="dv">25</span>, <span class="at">group =</span> storey_range), </span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">height =</span> <span class="fl">0.6</span>,</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> <span class="st">"#D55E00"</span>)<span class="sc">+</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transition_states</span>(.draw, <span class="dv">1</span>, <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>NULL</code></pre>
+<p>To provide visibility about the uncertainty of point estimates for resale price across storey range, we can use <code>ggdist</code> package and specifically <code>stat_pointinterval()</code> to have a sensing of the uncertainty.</p>
+<div class="cell" data-fig.dim="[10,8]">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>resale_flat <span class="sc">%&gt;%</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> storey_range, </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span> resale_price)) <span class="sc">+</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_gradientinterval</span>(</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"skyblue"</span>, </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">show.legend =</span> <span class="cn">TRUE</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span>   <span class="co">#&lt;&lt;</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Visualising confidence intervals of mean resale price across storey range"</span>,</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Mean Point + Multiple-interval plot"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Take-Home-Exercise-3_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
-<p>Results: Oneway ANOVA test results shows that the differences in mean of resale flat prices across storey ranges are significant; hence there is evidence to show that storey level can affect the price of the resale flat in general.</p>
 </section>
 <section id="d-can-a-model-of-factors-that-influence-price-be-built" class="level2">
 <h2 class="anchored" data-anchor-id="d-can-a-model-of-factors-that-influence-price-be-built"><strong>(D) Can a model of factors that influence price be built?</strong></h2>
 <p>To examine this, we first apply a multiple linear regression model to see if a model can be constructed using the numerical variables in our data set.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(resale_price <span class="sc">~</span> floor_area_sqm <span class="sc">+</span> month <span class="sc">+</span> lease_commence_date <span class="sc">+</span> remaining_lease_months, <span class="at">data =</span> resale_flat)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>model</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(resale_price <span class="sc">~</span> floor_area_sqm <span class="sc">+</span> month <span class="sc">+</span> lease_commence_date <span class="sc">+</span> remaining_lease_months, <span class="at">data =</span> resale_flat)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>model</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -512,24 +514,24 @@ Coefficients:
 </div>
 <p>We check for multi-collinearity as follows and find that both ‘lease_commence_date’ and ‘remaining_lease_months’ have high degree of collinearity and we should re-run the model again while dropping one of these variables</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>check_c <span class="ot">&lt;-</span> <span class="fu">check_collinearity</span>(model)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(check_c)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>check_c <span class="ot">&lt;-</span> <span class="fu">check_collinearity</span>(model)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(check_c)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Take-Home-Exercise-3_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>To complete model diagnostic checks, run check_model on the model to obtain an overall view of diagnostic parameters like Homogeity of Variance and Normality of Residuals:</p>
 <div class="cell" data-fig.dim="[8,8]">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Take-Home-Exercise-3_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>Re-run of Model with ‘lease_commence_date’ dropped:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>model_2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(resale_price <span class="sc">~</span> floor_area_sqm <span class="sc">+</span> month <span class="sc">+</span> remaining_lease_months, <span class="at">data =</span> resale_flat)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>model_2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>model_2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(resale_price <span class="sc">~</span> floor_area_sqm <span class="sc">+</span> month <span class="sc">+</span> remaining_lease_months, <span class="at">data =</span> resale_flat)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>model_2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -542,7 +544,7 @@ Coefficients:
 remaining_lease_months  
                  305.3  </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -568,15 +570,38 @@ F-statistic: 1.121e+04 on 3 and 26731 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggcoefstats</span>(model_2, <span class="at">output =</span><span class="st">"plot"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggcoefstats</span>(model_2, <span class="at">output =</span><span class="st">"plot"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Take-Home-Exercise-3_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>p-values in the model are significant and the F-value is also large enough to indicate that the model is stable. Plot to visualize the model parameters using <code>ggcoefstats</code> to see where the values lie with respect to the terms.</p>
-
-
 </section>
+</section>
+<section id="summary-of-findings" class="level1">
+<h1>Summary of Findings</h1>
+<ol type="1">
+<li><p>How does the resale price vary with the remaining lease years in general?</p>
+<ul>
+<li>We need to determine if the linear relationship in the sample data is strong enough to model the relationship in the population. Hence based on the graphical result, p-value is 0 shows that the correlation coefficient is not significant, hence there is insufficient evidence to prove that a significant linear relationship exists between x &amp; y.</li>
+</ul></li>
+<li><p>Does the time of the year affect the resale price of flats in a town?</p>
+<ul>
+<li><p>From the distribution shown in the early visualizations, resale price seems to peak in September while hits the lowest in February.</p></li>
+<li><p>From the Oneway Anova Test results, we observe that January, February, September and October have the higher number of significantly different relationships with other months. This shows that there are indeed differences in Resale prices in certain months of the year. The caveat here would be to also extend this analysis to compare with same months of different years.</p></li>
+</ul></li>
+<li><p>Does the storey (eg. higher vs lower floors) matter and affect the resale price?</p>
+<ul>
+<li><p>From the barplot distribution, we see that there are already a trend in the mean resale price which appears to be in an ascending trend as the storey range increases (getting to higher levels).</p></li>
+<li><p>The ANOVA test results also indicate the differences explicitly with the results of p-values showing up as significant between many pairs of storey_ranges. There is evidence to show that storey level can affect the price of the resale flat in general.</p></li>
+</ul></li>
+<li><p>Can a model of factors that influence price be built?</p>
+<ul>
+<li>A model with 3 variables was built (Floor area, Month and Remaining Lease Months) with significant p-value results which can determine an inductive value of Resale Price.</li>
+</ul></li>
+</ol>
+
+
 </section>
 
 </main> <!-- /main -->

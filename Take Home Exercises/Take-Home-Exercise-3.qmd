@@ -19,7 +19,7 @@ The dataset to be examined in this Visual Analytics assignment is taken from Sin
 Upon checking the dataset, the following columns are available to be used in the analysis:
 
 | Variable Name       | Description of Variable                                      |
-|------------------------|------------------------------------------------|
+|-------------------------|-----------------------------------------------|
 | month               | Datetime (Month) "YYYY-MM" of the associated resale price    |
 | town                | Area where the resale flat is located in                     |
 | flat_type           | Type of flat eg. 3 room or 4 room                            |
@@ -34,19 +34,18 @@ Upon checking the dataset, the following columns are available to be used in the
 
 In order to use the data provided more effectively, the following cleaning steps and variable conversions were done using Excel first before application in R to extract and apply the variables in the visualization.
 
-| S/N | Variable | Transformation Step |
-|-----|----------|---------------------|
-|     |          |                     |
-|     |          |                     |
-|     |          |                     |
+| S/N | Variable        | Transformation Step                                                                                |
+|-------|--------------|--------------------------------------------|
+| 1   | month           | Split the year and the month into 2 new columns for easier reference to the time period 'month'    |
+| 2   | remaining_lease | Transformed to months instead of years and months and renamed variable to 'remaining_lease_months' |
 
-# Approach and Method 
+# Approach and Method
 
 This analytical visualization will attempt to answer the following questions:
 
-1.  How does the resale price vary with the remaining lease years in general?
+1.  Does resale price have a linear relationship with remaining lease months?
 
-2.  Does the time of the year affect the resale price of flats in a town?
+2.  Is resale price affected by the month of the year?
 
 3.  Does the storey (eg. higher vs lower floors) matter and affect the resale price?
 
@@ -66,9 +65,9 @@ data <- read_csv("resale-flat-prices/resale-flat-prices-based-on-registration-da
 resale_flat <- filter(data, year == 2022)
 ```
 
-## **(A) How does the resale price vary with the remaining lease years in general?**
+## **(A) Does resale price have a linear relationship with remaining lease months?** 
 
-To examine this, we apply the visual for significant test of correlation between the resale flat prices and the remaining lease months to see if there is a relationship. Using R, ggscatterstats can be used to obtain the correlation plot between resale flat prices and remaining lease months directly.
+To examine this, we apply the visualization for significant test of correlation between the resale flat prices and the remaining lease months variable to see if there is a relationship. Using R, `ggscatterstats` can be used to obtain the correlation plot between resale flat prices and remaining lease months directly.
 
 ```{r}
 ggscatterstats(
@@ -81,9 +80,9 @@ ggscatterstats(
 )
 ```
 
-## **(B) Does the time of the year affect the resale price of flats in a town?**
+## **(B) Is resale price affected by the month of the year?** 
 
-To answer this question, we first plot multi-ridge plots to determine the resale flat price distribution across town areas.
+To answer this question, we first plot multi-ridge plots to determine the resale flat price distribution across town areas to have an idea of how different they could be.
 
 ```{r}
 ggplot(resale_flat,
@@ -93,7 +92,11 @@ ggplot(resale_flat,
   labs("Resale Flat Prices Across Towns over the Year 2022") + 
   theme(legend.position = "none") + 
   labs(x = "Resale Flat Prices in Y2022", y = "Town") 
+
+
 ```
+
+This is followed by plotting a stacked bar plot across the months in Y2022 to visualize the distribution of Resale Price according to the town areas.
 
 ```{r}
 ggplot(resale_flat, 
@@ -101,6 +104,8 @@ ggplot(resale_flat,
   geom_bar(stat = "identity") + 
   labs(x = "Months of the Year 2022", y = "Resale Flat Price")
 ```
+
+Following which, to determine if there are significant differences between groups (ie months), we perfrom the oneway ANOVA test using `ggbetweenstats` for non-parametric (assume unknown and unequal variance).
 
 ```{r}
 #| fig.dim = c(8,6)
@@ -115,10 +120,10 @@ ggbetweenstats(
 
 ## **(C) Does the storey (eg. higher vs lower floors) matter and affect the resale price?**
 
-To observe the distribution of the prices, a bar plot diagram is used to check the distribution. For this, we apply ggplot's barplot to have an idea of the
+To observe the distribution of the prices, a bar plot diagram is used to check the distribution. For this, we apply `ggplot's barplot` to have an idea of the mean resale price trend across the different storey_ranges.
 
 ```{r}
-#| fig.dim = c(8,6)
+#| fig.dim = c(12,10)
 ggplot(resale_flat, 
        aes(x =storey_range, y = resale_price, color = storey_range)) + 
   geom_bar(position = "dodge",
@@ -130,7 +135,7 @@ ggplot(resale_flat,
 Oneway ANOVA Test was conducted between storey ranges and the resale price using ggbetweenstats.
 
 ```{r}
-#| fig.dim = c(8,6)
+#| fig.dim = c(10,8)
 ggbetweenstats(
   data = resale_flat,
   x = storey_range, 
@@ -144,23 +149,21 @@ ggbetweenstats(
 )
 ```
 
-To provide visibility and visualization of the uncertainty, we can plot the Hypthetical Outcome Plots (HOPs):
+To provide visibility about the uncertainty of point estimates for resale price across storey range, we can use `ggdist` package and specifically `stat_pointinterval()` to have a sensing of the uncertainty.
 
 ```{r}
-ggplot(data = resale_flat, 
-       (aes(x = factor(storey_range), y = resale_price))) +
-  geom_point(position = position_jitter(
-    height = 0.3, 
-    width = 0.05), 
-    linewidth = 0.4, color = "#0072B2", alpha = 1/2) +
-  geom_hpline(data = sampler(25, group = storey_range), 
-              height = 0.6,
-              color = "#D55E00")+
-  theme_bw() + 
-  transition_states(.draw, 1, 3)
+#| fig.dim = c(10,8)
+resale_flat %>%
+  ggplot(aes(x = storey_range, 
+             y = resale_price)) +
+  stat_gradientinterval(
+    fill = "skyblue", 
+    show.legend = TRUE
+  ) +   #<<
+  labs(
+    title = "Visualising confidence intervals of mean resale price across storey range",
+    subtitle = "Mean Point + Multiple-interval plot")
 ```
-
-Results: Oneway ANOVA test results shows that the differences in mean of resale flat prices across storey ranges are significant; hence there is evidence to show that storey level can affect the price of the resale flat in general.
 
 ## **(D) Can a model of factors that influence price be built?**
 
@@ -200,3 +203,25 @@ ggcoefstats(model_2, output ="plot")
 ```
 
 p-values in the model are significant and the F-value is also large enough to indicate that the model is stable. Plot to visualize the model parameters using `ggcoefstats` to see where the values lie with respect to the terms.
+
+# Summary of Findings
+
+1.  How does the resale price vary with the remaining lease years in general?
+
+    -   We need to determine if the linear relationship in the sample data is strong enough to model the relationship in the population. Hence based on the graphical result, p-value is 0 shows that the correlation coefficient is not significant, hence there is insufficient evidence to prove that a significant linear relationship exists between x & y.
+
+2.  Does the time of the year affect the resale price of flats in a town?
+
+    -   From the distribution shown in the early visualizations, resale price seems to peak in September while hits the lowest in February.
+
+    -   From the Oneway Anova Test results, we observe that January, February, September and October have the higher number of significantly different relationships with other months. This shows that there are indeed differences in Resale prices in certain months of the year. The caveat here would be to also extend this analysis to compare with same months of different years.
+
+3.  Does the storey (eg. higher vs lower floors) matter and affect the resale price?
+
+    -   From the barplot distribution, we see that there are already a trend in the mean resale price which appears to be in an ascending trend as the storey range increases (getting to higher levels).
+
+    -   The ANOVA test results also indicate the differences explicitly with the results of p-values showing up as significant between many pairs of storey_ranges. There is evidence to show that storey level can affect the price of the resale flat in general.
+
+4.  Can a model of factors that influence price be built?
+
+    -   A model with 3 variables was built (Floor area, Month and Remaining Lease Months) with significant p-value results which can determine an inductive value of Resale Price.
