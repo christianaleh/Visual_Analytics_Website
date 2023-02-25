@@ -19,7 +19,7 @@ The dataset to be examined in this Visual Analytics assignment is taken from Sin
 Upon checking the dataset, the following columns are available to be used in the analysis:
 
 | Variable Name       | Description of Variable                                      |
-|-------------------------|-----------------------------------------------|
+|---------------------|--------------------------------------------------------------|
 | month               | Datetime (Month) "YYYY-MM" of the associated resale price    |
 | town                | Area where the resale flat is located in                     |
 | flat_type           | Type of flat eg. 3 room or 4 room                            |
@@ -35,7 +35,7 @@ Upon checking the dataset, the following columns are available to be used in the
 In order to use the data provided more effectively, the following cleaning steps and variable conversions were done using Excel first before application in R to extract and apply the variables in the visualization.
 
 | S/N | Variable        | Transformation Step                                                                                |
-|-------|--------------|--------------------------------------------|
+|-----|-----------------|----------------------------------------------------------------------------------------------------|
 | 1   | month           | Split the year and the month into 2 new columns for easier reference to the time period 'month'    |
 | 2   | remaining_lease | Transformed to months instead of years and months and renamed variable to 'remaining_lease_months' |
 
@@ -65,7 +65,7 @@ data <- read_csv("resale-flat-prices/resale-flat-prices-based-on-registration-da
 resale_flat <- filter(data, year == 2022)
 ```
 
-## **(A) Does resale price have a linear relationship with remaining lease months?** 
+## **(A) Does resale price have a linear relationship with remaining lease months?**
 
 To examine this, we apply the visualization for significant test of correlation between the resale flat prices and the remaining lease months variable to see if there is a relationship. Using R, `ggscatterstats` can be used to obtain the correlation plot between resale flat prices and remaining lease months directly.
 
@@ -80,7 +80,7 @@ ggscatterstats(
 )
 ```
 
-## **(B) Is resale price affected by the month of the year?** 
+## **(B) Is resale price affected by the month of the year?**
 
 To answer this question, we first plot multi-ridge plots to determine the resale flat price distribution across town areas to have an idea of how different they could be.
 

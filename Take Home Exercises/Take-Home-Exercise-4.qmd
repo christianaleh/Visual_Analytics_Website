@@ -1,0 +1,284 @@
+---
+title: "Take Home Exercise 04"
+author: Christiana Lim
+date: "18 Feb 2023"
+date-modified: "`r Sys.Date()`"
+execute: 
+  echo: true
+  eval: true
+  warning: false
+format: 
+  html: 
+    page-layout: full
+    code_foling: hide
+---
+
+Using visualization techniques learnt in Lesson 6: It's About Time, appropriate **interactive techniques** to enhance user experience and data discovery experiences.
+
+The focus will be on import and export data for the period of Y2022 to Y2022 and the intention of the visualizations is to make salient any patterns and impact to bilateral trade balance, imports and exports to Singapore post-COVID.
+
+```{r}
+pacman::p_load(tidyverse, gganimate, patchwork, gapminder, readxl, gifski, png, transformr, CGPfunctions, ggthemes, ggHoriPlot, lubridate) 
+```
+
+```{r}
+imports_raw <- read_excel("MerchandiseTrade.xlsx", sheet = "T1")
+exports_raw <- read_excel("MerchandiseTrade.xlsx", sheet = "T2")
+```
+
+## Data Cleaning
+
+Step 1. Drop rows which contain irrelevant data from the raw imported data source in separated raw tables since imports and exports are from 2 tabs in the excel file.
+
+```{r}
+imports <- imports_raw[-c(1:8, 129:151),]
+exports <- exports_raw[-c(1:8, 101:123),]
+```
+
+Step 2. Perform initial data cleaning by reshaping the data and renaming variables for both imports and exports table.
+
+```{r}
+imports1 <- as.data.frame(t(imports)) #Transpose rows and columns 
+names(imports1) <- imports1[1,] # Rename Title Rows with row 1 values 
+imports1 <- imports1[-1,] #Drop the unneccesary row 
+names(imports1)[1] ="DateYear" # Rename Year Month Column 
+imports2 <- imports1[, -2] # Drop Unneccessary columns 
+
+#Repeat the same steps above for the exports table
+exports1 <- as.data.frame(t(exports))
+names(exports1) <- exports1[1,] 
+exports1 <- exports1[-1,]
+names(exports1)[1] ="DateYear"
+exports2 <- exports1[, -2]
+```
+
+Step 3. Tidy both the Imports and Exports tables using pivot_longer to reshape data.
+
+```{r}
+#Pivot longer for the imports table 
+imports3 <- imports2 %>% 
+  pivot_longer(
+    cols = !DateYear,
+    names_to = "Country", 
+    values_to = "Import_Value"
+  )
+
+#Multiply Trade Value column by Thousands to get actual value 
+imports3$Import_Value<- 1000*as.numeric(imports3$Import_Value)
+
+#Separate columns
+imports_tidy <- imports3 %>% separate(DateYear, c('Year', 'Month')) 
+imports_tidy[c('Country', 'X')] <- str_split_fixed(imports_tidy$Country, " \\(", 2)
+
+# Drop column X
+imports_tidy <- imports_tidy[, -5]
+
+```
+
+```{r}
+#Pivot longer for the exports table 
+exports3 <- exports2 %>% 
+  pivot_longer(
+    cols = !DateYear,
+    names_to = "Country", 
+    values_to = "Export_Value"
+  )
+
+#Multiply Trade Value column by Thousands to get actual value 
+exports3$Export_Value<- 1000*as.numeric(exports3$Export_Value)
+
+#Separate columns
+exports_tidy <- exports3 %>% separate(DateYear, c('Year', 'Month')) 
+exports_tidy[c('Country', 'X')] <- str_split_fixed(exports_tidy$Country, " \\(", 2)
+
+# Drop column X 
+exports_tidy <- exports_tidy[, -5] 
+```
+
+Step 4. Join both the Exports and Imports tidied tables into 1 overall table called 'trade'
+
+```{r}
+trade = merge(x=imports_tidy,y=exports_tidy,by=c("Country", "Year", "Month"),all=TRUE)
+
+#Creating new column Balance of Trade (BOT) 
+trade$BOT <- trade$Export_Value - trade$Import_Value
+```
+
+## Unveiling Salient Trade Patterns
+
+The important countries of interest to be studied are first identified. The basis of selection is taken from the [Department of Singstats's infographic information](https://www.singstat.gov.sg/modules/infographics/singapore-international-trade#:~:text=In%202022%2C%20Mainland%20China%2C%20Malaysia,exports%20to%20these%20trading%20partners.&text=Made%20up%2083.0%25%20of%20non%2Doil%20domestic%20exports.) provided on the major international trade partners that Singapore has.
+
+The top 6 countries are: United States, Japan, Mainland China, Australia, Hong Kong, United Kingdom
+
+## What are the bilateral trade patterns of Singapore's Top 6 trading partner countries in Y2022?
+
+To visualize last year's bilateral trade trend for last year, we first visualize using a moving line plot. This will attempt to reveal the current month-by-month changes in exports made and imports from the respective countries.
+
+Step 1. Extract target countries into a new table and group accordingly to the trade-type (export and import).
+
+```{r}
+top_6 <- subset(trade, Year == '2022' & Country %in% c('United States', 'Japan', 'Mainland China', 'Australia','Hong Kong', 'United Kingdom'))
+
+# Convert the month name to numbers
+top_6[["Month"]] <- match(top_6[["Month"]], month.abb)
+
+# Pivot longer for Import and Export Values 
+top_6 <- top_6 %>% 
+  pivot_longer(
+    cols = Import_Value:Export_Value,
+    names_to = "Trade_Type", 
+    values_to = "Trade_Value"
+  )
+
+```
+
+Step 2. Plot moving line plots using `gganimate`:
+
+```{r}
+top6_ggplot <- ggplot(top_6, (aes(x = Month, y = Trade_Value, group = Trade_Type, color = Trade_Type))) + 
+  geom_line(alpha = 2, show.legend = TRUE) + 
+  scale_size(range = c(3,12)) + 
+  scale_x_discrete(limits = c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12")) +
+  transition_reveal(Month) + 
+  facet_wrap(~Country) + 
+  labs(title = "Trade Value Trend in Y2022 by Month", x = 'Month in Y2022', y = 'Trade Amount') 
+
+animate(top6_ggplot, renderer = gifski_renderer())
+```
+
+**Findings**:
+
+-   From the visualization, it is observed that Mainland China had one of the highest trade volumes in both exports and imports as compared to the other countries. As such , contrary to Y2020, where United States was at the front leader, China has overtaken as Singapore's No. 1 trading partner in volume now.
+
+-   Hong Kong has a noticeable larger trade surplus as compared to the other countries which suggests that demand for SG goods is very high in Hong Kong.
+
+-   With the 2 greater players China and United States, Trade surplus is also not consistent throughout the year and appears to be in deficit for a great part of Y2022.
+
+## Observing Import & Export Values over the years for Top 6 countries
+
+To display an overall pattern on a year by year basis, we plot another moving line diagram to illustrate the trend of imports and export values for the 6 trading countries.
+
+Step 1. Create a new table covering data from the years 2020 to 2022 with summed (by year) values for Imports and Exports.
+
+```{r}
+#New table with just import and export values only 
+data3 <- trade[, -6]
+
+sum_trade <- data3 %>% 
+    group_by(Country, Year) %>%
+    summarize(sum_import = sum(Import_Value), sum_export = sum(Export_Value))
+```
+
+Step 2. Define the desired datatable for study and plot the moving line plot using `gganimate`
+
+```{r}
+
+top_6_years <- subset(sum_trade, Year %in% c('2020', '2021','2022') & Country %in% c('United States', 'Japan', 'Mainland China', 'Australia','Hong Kong', 'United Kingdom'))
+
+# Convert Year to numeric
+top_6_years$Year <- as.numeric(top_6_years$Year)
+
+# Pivot longer for Import and Export Values 
+top_6_years <- top_6_years %>% 
+  pivot_longer(
+    cols = sum_import: sum_export,
+    names_to = "Trade_Type", 
+    values_to = "Trade_Value"
+  )
+```
+
+```{r}
+top6_yr <- ggplot(top_6_years, (aes(x = Year, y = Trade_Value, group = Trade_Type, color = Trade_Type))) + 
+  geom_line(alpha = 2, show.legend = TRUE) + 
+  scale_size(range = c(3,12)) + 
+  scale_x_discrete(limits = c(2020, 2021, 2022)) +
+  transition_reveal(Year) + 
+  facet_wrap(~Country) + 
+  labs(title = "Trade Trends over 2020 to 2022", y = 'Trade Amount') 
+
+animate(top6_yr, renderer = gifski_renderer())
+```
+
+## Observing year period (Y2020 to Y2022) trends of Balance of Trade for key trade partners
+
+To visualize this trend, we plot the slope graph to uncover the magnitudes of trade surplus and trade deficit that Singapore experienced over the years with the 6 major trading partners.
+
+Step 1. Create a new table for the sum of Balance of Trade
+
+```{r}
+data2 <- trade[, -c(4,5)]
+data2[["Month"]] <- match(data2[["Month"]], month.abb)
+
+sum_BOT <- data2 %>% 
+    group_by(Country, Year) %>%
+    summarize(sum_BOT = sum(BOT))
+```
+
+Step 2. Plot the slope graph using the function `newggslopegraph` for the period of Y2020 to Y2021 to display the summed up balance of trade on the year level.
+
+```{r}
+sum_BOT %>% 
+  mutate(Year = factor(Year)) %>%
+  filter(Year %in% c('2020', '2021', '2022')) %>%
+  filter(Country %in% c('United States', 'Japan', 'Hong Kong', 'Australia', 'United Kingdom', 'Mainland China'))%>%
+  newggslopegraph(Year, sum_BOT, Country,
+                Title = "Balance of Trade by Year of Top 6 Trading Countries",
+                SubTitle = "Trade Movements from Y2020 to Y2022",
+                Caption = "Understanding Impact of COVID on Balance of Trade")
+
+```
+
+**Findings:**
+
+-   Hong Kong has the greatest trade surplus consistently in Y2020 to 2022 as compared to the other 5 major players. As the value appears to be increasing, from Y2020 to Y2021 and sustained thereafter, it suggests that some export recovery to Hong Kong has been attained post-COVID.
+
+-   For countries Japan, United Kingdom and United States however, exports in Y2021 and Y2022 are much lower compared to Y2020 which suggest no export recovery yet. Alternatively, this is also because of increase of imports relative to Y2020 which was the case for both United States and Japan.
+
+## How does the trend for Balance of Trade go by the month level? 
+
+While looking at the year level of balance of trade might reveal some insight, the month level trends of balance of trade would be useful to unveil any particular period specific trends with regards to trade. To show this pattern, the horizon plot will be plotted using `geom_horizon` function.
+
+Step 1. Prepare table for study
+
+```{r}
+top6_horizon <- trade %>% filter(Year %in% c('2020', '2021', '2022'), Country %in% c('United States', 'Hong Kong','United Kingdom', 'Mainland China', 'Australia', 'Japan') )
+
+```
+
+```{r}
+# Combine the Year and Month column
+top6_horizon$Date <- with(top6_horizon, sprintf("%s-%02s", Month, Year))
+top6_horizon$Date <- mdy(top6_horizon$Date)
+```
+
+Step 2. Plot the Horizon Plot to unveil clearer the trade balance patterns across the months.
+
+```{r}
+top6_horizon %>%
+  ggplot() + 
+  geom_horizon(aes(x = Date, y = BOT),
+               origin = "midpoint",
+               horizonscale =6) + 
+  facet_grid(`Country`~.) + 
+    theme_few() + 
+  scale_fill_hcl(palette = 'RdBu') + 
+  theme(panel.spacing.y = unit(0, "lines"), strip.text.y = element_text(
+    size = 7, angle = 0, hjust = 0),
+    legend.position = 'none',
+    axis.text.y = element_blank(),
+    axis.text.x = element_text(size =7),
+    axis.title.y = element_blank(),
+    axis.title.x = element_blank(),
+    axis.ticks.y = element_blank(),
+    panel.border = element_blank()
+  )+ 
+  scale_x_date(expand = c(0,0), date_breaks = "3 month", date_labels = "%b%y") + 
+  ggtitle('Trade Balance (Deficit) of 6 Key Trading Countries (Y2020 to Y2022)')
+
+```
+
+**Findings:**
+
+-   Over the months in the period of Y2020 to Y2022, trade surplus was relatively consistent for both Australia and Hong Kong since the middle of the COVID period. This suggests that commodities exported out from Singapore during the second half of COVID were in high demand in both Australia and Hong Kong.
+
+-   However, Trade deficit was persistent fro United Kingdom and also starting from the middle of Y2022 onwards became prominent for other countries like China, United States and Japan as well.
