@@ -282,3 +282,145 @@ top6_horizon %>%
 -   Over the months in the period of Y2020 to Y2022, trade surplus was relatively consistent for both Australia and Hong Kong since the middle of the COVID period. This suggests that commodities exported out from Singapore during the second half of COVID were in high demand in both Australia and Hong Kong.
 
 -   However, Trade deficit was persistent fro United Kingdom and also starting from the middle of Y2022 onwards became prominent for other countries like China, United States and Japan as well.
+
+## Ranking of Bilateral Trade (Exports) 
+
+To show the trend and pattern of changes in rankings of countries in terms of export values, we plot an animated bar chart for 14 selected countries (including the 6 that were previously explored) to see if there is any other pattern that can be unveiled. These 14 countries were highlighted for being major trading partners in either Y2020 or Y2022 or both.
+
+```{r}
+data3 <- trade[, -6]
+
+sum_Exim <- data3 %>% 
+    group_by(Country, Year) %>%
+    summarize(sum_export = sum(Export_Value), sum_import = sum(Import_Value))
+```
+
+```{r}
+sum_Exim <- sum_Exim %>%
+  filter(Country %in% c('United States', 'Hong Kong','United Kingdom', 'Mainland China', 'Australia', 'Japan', 'Switzerland', 'Ireland','India', 'Malaysia', 'Republic Of Korea', 'Thailand', 'Indonesia', 'Taiwan') & Year %in% c('2018', '2019','2020','2021','2022')) %>% 
+  group_by(Year) %>%
+  #Rank Export values by year
+  mutate(rank = rank(-sum_export),
+         Export_rel = sum_export/sum_export[rank == 1],
+         Export_lbl = paste0("$ ", round(sum_export, 4))) %>%
+  group_by(Country) %>%
+  ungroup()
+```
+
+Create a static plot graph for Exports:
+
+```{r}
+export.static <- ggplot(sum_Exim, aes(rank, group = Country,
+                fill = as.factor(Country), color = as.factor(Country))) +
+  geom_tile(aes(y = sum_export/2,
+                height = sum_export,
+                width = 0.9), alpha = 0.8, color = NA) +
+  geom_text(aes(y = 0, label = paste(Country, " ")), vjust = 0.2, hjust = 1, size = 5) +
+  geom_text(aes(y = sum_export, label =  Export_lbl, hjust = 0), size = 6) +
+  coord_flip(clip = "off", expand = FALSE) +
+  scale_y_continuous(labels = scales::comma) +
+  scale_x_reverse() +
+  guides(color = FALSE, fill = FALSE) +
+  theme(axis.line = element_blank(),
+        axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        legend.position = "none",
+        panel.background = element_blank(),
+        panel.border = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.grid.major.x = element_line(size = 0.1, color = "grey"),
+        panel.grid.minor.x = element_line(size = 0.1, color = "grey"),
+        plot.title = element_text(size = 25),
+        plot.subtitle = element_text(size=18, face = "italic", color = "grey",  hjust = 0.5, vjust = -1),
+        plot.background = element_blank(),
+        plot.margin = margin(4, 4, 4, 4, "cm"))
+```
+
+Use the transition_states() function from the gganimate package to allow the changes in the ranking
+
+```{r}
+
+anim <- export.static + 
+  transition_states(Year, transition_length = 4, state_length = 1) +
+  view_follow(fixed_x = TRUE)  +
+  labs(title = 'Export Values for 14 identified trading partners of Singapore: {closest_state}',
+       subtitle  = "Values reported up to 4 significant figures")
+```
+
+```{r}
+animate(anim, 200, fps = 20, width = 1200, height = 1000, 
+        renderer = gifski_renderer())
+```
+
+## Ranking of Bilateral Trade (Imports) 
+
+Similarly, we plot the same animated bar chart graph to display the ranking for Import Values as well.
+
+```{r}
+sum_Import <- sum_Exim %>%
+  filter(Country %in% c('United States', 'Hong Kong','United Kingdom', 'Mainland China', 'Australia', 'Japan', 'Switzerland', 'Ireland','India', 'Malaysia', 'Republic Of Korea', 'Thailand', 'Indonesia', 'Taiwan') & Year %in% c('2018', '2019','2020','2021','2022')) %>% 
+  group_by(Year) %>%
+  #Rank Export values by year
+  mutate(rank = rank(-sum_import),
+         Import_rel = sum_import/sum_import[rank == 1],
+         Import_lbl = paste0("$ ", round(sum_import, 4))) %>%
+  group_by(Country) %>%
+  ungroup()
+```
+
+Create the static plot for Import values
+
+```{r}
+import.static <- ggplot(sum_Import, aes(rank, group = Country,
+                fill = as.factor(Country), color = as.factor(Country))) +
+  geom_tile(aes(y = sum_import/2,
+                height = sum_import,
+                width = 0.9), alpha = 0.8, color = NA) +
+  geom_text(aes(y = 0, label = paste(Country, " ")), vjust = 0.2, hjust = 1, size = 5) +
+  geom_text(aes(y = sum_import, label = Import_lbl, hjust = 0), size = 6) +
+  coord_flip(clip = "off", expand = FALSE) +
+  scale_y_continuous(labels = scales::comma) +
+  scale_x_reverse() +
+  guides(color = FALSE, fill = FALSE) +
+  theme(axis.line = element_blank(),
+        axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        legend.position = "none",
+        panel.background = element_blank(),
+        panel.border = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.grid.major.x = element_line(size = 0.1, color = "grey"),
+        panel.grid.minor.x = element_line(size = 0.1, color = "grey"),
+        plot.title = element_text(size = 25),
+        plot.subtitle = element_text(size=18, face = "italic", color = "grey",  hjust = 0.5, vjust = -1),
+        plot.background = element_blank(),
+        plot.margin = margin(4, 4, 4, 4, "cm"))
+```
+
+```{r}
+anim_import <- import.static + 
+  transition_states(Year, transition_length = 4, state_length = 1) +
+  view_follow(fixed_x = TRUE)  +
+  labs(title = 'Import Values for 14 identified trading partners of Singapore: {closest_state}',
+       subtitle  = "Values reported up to 4 significant figures")
+```
+
+```{r}
+animate(anim_import, 200, fps = 20, width = 1200, height = 1000, 
+        renderer = gifski_renderer())
+```
+
+**Findings:**
+
+-   Based on the Export and Import rankings graph, it is observed that Malaysia has overtaken United States to be the 2nd largest trading partner in terms of exports and imports for Singapore. This seems to be an impact of COVID since due to restriction measures, overseas trade for products and services were very limited by geo-distances.
+
+-   While imports from Japan have been consistently high over the years, imports from Korea have also increased, overtaking even Indonesia. This could also be an effect from a greater interest in Korean culture and higher demand its related products and services.
+

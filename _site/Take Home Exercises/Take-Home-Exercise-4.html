@@ -244,6 +244,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#observing-import-export-values-over-the-years-for-top-6-countries" id="toc-observing-import-export-values-over-the-years-for-top-6-countries" class="nav-link" data-scroll-target="#observing-import-export-values-over-the-years-for-top-6-countries">Observing Import &amp; Export Values over the years for Top 6 countries</a></li>
   <li><a href="#observing-year-period-y2020-to-y2022-trends-of-balance-of-trade-for-key-trade-partners" id="toc-observing-year-period-y2020-to-y2022-trends-of-balance-of-trade-for-key-trade-partners" class="nav-link" data-scroll-target="#observing-year-period-y2020-to-y2022-trends-of-balance-of-trade-for-key-trade-partners">Observing year period (Y2020 to Y2022) trends of Balance of Trade for key trade partners</a></li>
   <li><a href="#how-does-the-trend-for-balance-of-trade-go-by-the-month-level" id="toc-how-does-the-trend-for-balance-of-trade-go-by-the-month-level" class="nav-link" data-scroll-target="#how-does-the-trend-for-balance-of-trade-go-by-the-month-level">How does the trend for Balance of Trade go by the month level?</a></li>
+  <li><a href="#ranking-of-bilateral-trade-exports" id="toc-ranking-of-bilateral-trade-exports" class="nav-link" data-scroll-target="#ranking-of-bilateral-trade-exports">Ranking of Bilateral Trade (Exports)</a></li>
+  <li><a href="#ranking-of-bilateral-trade-imports" id="toc-ranking-of-bilateral-trade-imports" class="nav-link" data-scroll-target="#ranking-of-bilateral-trade-imports">Ranking of Bilateral Trade (Imports)</a></li>
   </ul>
 </nav>
     </div>
@@ -522,7 +524,141 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p><strong>Findings:</strong></p>
 <ul>
-<li>Over the months in the period of Y2020 to Y2022, trade surplus were relatively consistent for both Australia and Hong Kong since the middle of the COVID period. This suggests that commodities exported out from Singapore during the second half of COVID were in high demand in both Australia and Hong Kong.</li>
+<li><p>Over the months in the period of Y2020 to Y2022, trade surplus was relatively consistent for both Australia and Hong Kong since the middle of the COVID period. This suggests that commodities exported out from Singapore during the second half of COVID were in high demand in both Australia and Hong Kong.</p></li>
+<li><p>However, Trade deficit was persistent fro United Kingdom and also starting from the middle of Y2022 onwards became prominent for other countries like China, United States and Japan as well.</p></li>
+</ul>
+</section>
+<section id="ranking-of-bilateral-trade-exports" class="level2">
+<h2 class="anchored" data-anchor-id="ranking-of-bilateral-trade-exports">Ranking of Bilateral Trade (Exports)</h2>
+<p>To show the trend and pattern of changes in rankings of countries in terms of export values, we plot an animated bar chart for 14 selected countries (including the 6 that were previously explored) to see if there is any other pattern that can be unveiled. These 14 countries were highlighted for being major trading partners in either Y2020 or Y2022 or both.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>data3 <span class="ot">&lt;-</span> trade[, <span class="sc">-</span><span class="dv">6</span>]</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>sum_Exim <span class="ot">&lt;-</span> data3 <span class="sc">%&gt;%</span> </span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(Country, Year) <span class="sc">%&gt;%</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">sum_export =</span> <span class="fu">sum</span>(Export_Value), <span class="at">sum_import =</span> <span class="fu">sum</span>(Import_Value))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>sum_Exim <span class="ot">&lt;-</span> sum_Exim <span class="sc">%&gt;%</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Country <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">'United States'</span>, <span class="st">'Hong Kong'</span>,<span class="st">'United Kingdom'</span>, <span class="st">'Mainland China'</span>, <span class="st">'Australia'</span>, <span class="st">'Japan'</span>, <span class="st">'Switzerland'</span>, <span class="st">'Ireland'</span>,<span class="st">'India'</span>, <span class="st">'Malaysia'</span>, <span class="st">'Republic Of Korea'</span>, <span class="st">'Thailand'</span>, <span class="st">'Indonesia'</span>, <span class="st">'Taiwan'</span>) <span class="sc">&amp;</span> Year <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">'2018'</span>, <span class="st">'2019'</span>,<span class="st">'2020'</span>,<span class="st">'2021'</span>,<span class="st">'2022'</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Year) <span class="sc">%&gt;%</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Rank Export values by year</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rank =</span> <span class="fu">rank</span>(<span class="sc">-</span>sum_export),</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">Export_rel =</span> sum_export<span class="sc">/</span>sum_export[rank <span class="sc">==</span> <span class="dv">1</span>],</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">Export_lbl =</span> <span class="fu">paste0</span>(<span class="st">"$ "</span>, <span class="fu">round</span>(sum_export, <span class="dv">4</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Country) <span class="sc">%&gt;%</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Create a static plot graph for Exports:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>export.static <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(sum_Exim, <span class="fu">aes</span>(rank, <span class="at">group =</span> Country,</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">fill =</span> <span class="fu">as.factor</span>(Country), <span class="at">color =</span> <span class="fu">as.factor</span>(Country))) <span class="sc">+</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">y =</span> sum_export<span class="sc">/</span><span class="dv">2</span>,</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">height =</span> sum_export,</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">width =</span> <span class="fl">0.9</span>), <span class="at">alpha =</span> <span class="fl">0.8</span>, <span class="at">color =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="dv">0</span>, <span class="at">label =</span> <span class="fu">paste</span>(Country, <span class="st">" "</span>)), <span class="at">vjust =</span> <span class="fl">0.2</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">y =</span> sum_export, <span class="at">label =</span>  Export_lbl, <span class="at">hjust =</span> <span class="dv">0</span>), <span class="at">size =</span> <span class="dv">6</span>) <span class="sc">+</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>(<span class="at">clip =</span> <span class="st">"off"</span>, <span class="at">expand =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>comma) <span class="sc">+</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_reverse</span>() <span class="sc">+</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">color =</span> <span class="cn">FALSE</span>, <span class="at">fill =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.line =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"none"</span>,</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.background =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.border =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major.x =</span> <span class="fu">element_line</span>(<span class="at">size =</span> <span class="fl">0.1</span>, <span class="at">color =</span> <span class="st">"grey"</span>),</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor.x =</span> <span class="fu">element_line</span>(<span class="at">size =</span> <span class="fl">0.1</span>, <span class="at">color =</span> <span class="st">"grey"</span>),</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">25</span>),</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">18</span>, <span class="at">face =</span> <span class="st">"italic"</span>, <span class="at">color =</span> <span class="st">"grey"</span>,  <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="dv">1</span>),</span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.background =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.margin =</span> <span class="fu">margin</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="st">"cm"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Use the transition_states() function from the gganimate package to allow the changes in the ranking</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>anim <span class="ot">&lt;-</span> export.static <span class="sc">+</span> </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transition_states</span>(Year, <span class="at">transition_length =</span> <span class="dv">4</span>, <span class="at">state_length =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">view_follow</span>(<span class="at">fixed_x =</span> <span class="cn">TRUE</span>)  <span class="sc">+</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">'Export Values for 14 identified trading partners of Singapore: {closest_state}'</span>,</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle  =</span> <span class="st">"Values reported up to 4 significant figures"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">animate</span>(anim, <span class="dv">200</span>, <span class="at">fps =</span> <span class="dv">20</span>, <span class="at">width =</span> <span class="dv">1200</span>, <span class="at">height =</span> <span class="dv">1000</span>, </span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">renderer =</span> <span class="fu">gifski_renderer</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Take-Home-Exercise-4_files/figure-html/unnamed-chunk-22-1.gif" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="ranking-of-bilateral-trade-imports" class="level2">
+<h2 class="anchored" data-anchor-id="ranking-of-bilateral-trade-imports">Ranking of Bilateral Trade (Imports)</h2>
+<p>Similarly, we plot the same animated bar chart graph to display the ranking for Import Values as well.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>sum_Import <span class="ot">&lt;-</span> sum_Exim <span class="sc">%&gt;%</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Country <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">'United States'</span>, <span class="st">'Hong Kong'</span>,<span class="st">'United Kingdom'</span>, <span class="st">'Mainland China'</span>, <span class="st">'Australia'</span>, <span class="st">'Japan'</span>, <span class="st">'Switzerland'</span>, <span class="st">'Ireland'</span>,<span class="st">'India'</span>, <span class="st">'Malaysia'</span>, <span class="st">'Republic Of Korea'</span>, <span class="st">'Thailand'</span>, <span class="st">'Indonesia'</span>, <span class="st">'Taiwan'</span>) <span class="sc">&amp;</span> Year <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">'2018'</span>, <span class="st">'2019'</span>,<span class="st">'2020'</span>,<span class="st">'2021'</span>,<span class="st">'2022'</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Year) <span class="sc">%&gt;%</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Rank Export values by year</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rank =</span> <span class="fu">rank</span>(<span class="sc">-</span>sum_import),</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">Import_rel =</span> sum_import<span class="sc">/</span>sum_import[rank <span class="sc">==</span> <span class="dv">1</span>],</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">Import_lbl =</span> <span class="fu">paste0</span>(<span class="st">"$ "</span>, <span class="fu">round</span>(sum_import, <span class="dv">4</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Country) <span class="sc">%&gt;%</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Create the static plot for Import values</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>import.static <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(sum_Import, <span class="fu">aes</span>(rank, <span class="at">group =</span> Country,</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">fill =</span> <span class="fu">as.factor</span>(Country), <span class="at">color =</span> <span class="fu">as.factor</span>(Country))) <span class="sc">+</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">y =</span> sum_import<span class="sc">/</span><span class="dv">2</span>,</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">height =</span> sum_import,</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">width =</span> <span class="fl">0.9</span>), <span class="at">alpha =</span> <span class="fl">0.8</span>, <span class="at">color =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="dv">0</span>, <span class="at">label =</span> <span class="fu">paste</span>(Country, <span class="st">" "</span>)), <span class="at">vjust =</span> <span class="fl">0.2</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">y =</span> sum_import, <span class="at">label =</span> Import_lbl, <span class="at">hjust =</span> <span class="dv">0</span>), <span class="at">size =</span> <span class="dv">6</span>) <span class="sc">+</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>(<span class="at">clip =</span> <span class="st">"off"</span>, <span class="at">expand =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>comma) <span class="sc">+</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_reverse</span>() <span class="sc">+</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">color =</span> <span class="cn">FALSE</span>, <span class="at">fill =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.line =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"none"</span>,</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.background =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.border =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major.x =</span> <span class="fu">element_line</span>(<span class="at">size =</span> <span class="fl">0.1</span>, <span class="at">color =</span> <span class="st">"grey"</span>),</span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor.x =</span> <span class="fu">element_line</span>(<span class="at">size =</span> <span class="fl">0.1</span>, <span class="at">color =</span> <span class="st">"grey"</span>),</span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">25</span>),</span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">18</span>, <span class="at">face =</span> <span class="st">"italic"</span>, <span class="at">color =</span> <span class="st">"grey"</span>,  <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="dv">1</span>),</span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.background =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.margin =</span> <span class="fu">margin</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="st">"cm"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>anim_import <span class="ot">&lt;-</span> import.static <span class="sc">+</span> </span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transition_states</span>(Year, <span class="at">transition_length =</span> <span class="dv">4</span>, <span class="at">state_length =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">view_follow</span>(<span class="at">fixed_x =</span> <span class="cn">TRUE</span>)  <span class="sc">+</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">'Import Values for 14 identified trading partners of Singapore: {closest_state}'</span>,</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle  =</span> <span class="st">"Values reported up to 4 significant figures"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">animate</span>(anim_import, <span class="dv">200</span>, <span class="at">fps =</span> <span class="dv">20</span>, <span class="at">width =</span> <span class="dv">1200</span>, <span class="at">height =</span> <span class="dv">1000</span>, </span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">renderer =</span> <span class="fu">gifski_renderer</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Take-Home-Exercise-4_files/figure-html/unnamed-chunk-26-1.gif" class="img-fluid"></p>
+</div>
+</div>
+<p><strong>Findings:</strong></p>
+<ul>
+<li><p>Based on the Export and Import rankings graph, it is observed that Malaysia has overtaken United States to be the 2nd largest trading partner in terms of exports and imports for Singapore. This seems to be an impact of COVID since due to restriction measures, overseas trade for products and services were very limited by geo-distances.</p></li>
+<li><p>While imports from Japan have been consistently high over the years, imports from Korea have also increased, overtaking even Indonesia. This could also be an effect from a greater interest in Korean culture and higher demand its related products and services.</p></li>
 </ul>
 
 
