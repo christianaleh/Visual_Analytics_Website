@@ -234,7 +234,7 @@ sum_BOT %>%
 
 -   For countries Japan, United Kingdom and United States however, exports in Y2021 and Y2022 are much lower compared to Y2020 which suggest no export recovery yet. Alternatively, this is also because of increase of imports relative to Y2020 which was the case for both United States and Japan.
 
-## How does the trend for Balance of Trade go by the month level? 
+## How does the trend for Balance of Trade go by the month level?
 
 While looking at the year level of balance of trade might reveal some insight, the month level trends of balance of trade would be useful to unveil any particular period specific trends with regards to trade. To show this pattern, the horizon plot will be plotted using `geom_horizon` function.
 
@@ -281,9 +281,9 @@ top6_horizon %>%
 
 -   Over the months in the period of Y2020 to Y2022, trade surplus was relatively consistent for both Australia and Hong Kong since the middle of the COVID period. This suggests that commodities exported out from Singapore during the second half of COVID were in high demand in both Australia and Hong Kong.
 
--   However, Trade deficit was persistent fro United Kingdom and also starting from the middle of Y2022 onwards became prominent for other countries like China, United States and Japan as well.
+-   However, Trade deficit was persistent for United Kingdom and also starting from the middle of Y2022 onwards became prominent for other countries like China, United States and Japan as well.
 
-## Ranking of Bilateral Trade (Exports) 
+## Ranking of Bilateral Trade (Exports)
 
 To show the trend and pattern of changes in rankings of countries in terms of export values, we plot an animated bar chart for 14 selected countries (including the 6 that were previously explored) to see if there is any other pattern that can be unveiled. These 14 countries were highlighted for being major trading partners in either Y2020 or Y2022 or both.
 
@@ -356,7 +356,7 @@ animate(anim, 200, fps = 20, width = 1200, height = 1000,
         renderer = gifski_renderer())
 ```
 
-## Ranking of Bilateral Trade (Imports) 
+## Ranking of Bilateral Trade (Imports)
 
 Similarly, we plot the same animated bar chart graph to display the ranking for Import Values as well.
 
@@ -423,4 +423,3 @@ animate(anim_import, 200, fps = 20, width = 1200, height = 1000,
 -   Based on the Export and Import rankings graph, it is observed that Malaysia has overtaken United States to be the 2nd largest trading partner in terms of exports and imports for Singapore. This seems to be an impact of COVID since due to restriction measures, overseas trade for products and services were very limited by geo-distances.
 
 -   While imports from Japan have been consistently high over the years, imports from Korea have also increased, overtaking even Indonesia. This could also be an effect from a greater interest in Korean culture and higher demand its related products and services.
-
