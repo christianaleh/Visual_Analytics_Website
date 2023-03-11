@@ -86,3 +86,12 @@ g <- ggraph(GAStech_graph) +
 g + theme_graph(background = 'grey10',
                 text_colour = 'white')
 ```
+
+```{r}
+g <- ggraph(GAStech_graph, 
+            layout = "fr") +
+  geom_edge_link(aes()) +
+  geom_node_point(aes())
+
+g + theme_graph()
+```
