@@ -1,5 +1,5 @@
 ---
-title: " ISSS608 Visual Analytics Is Fun"
+title: " ISSS608 Visual Analytics Is Fun for Me"
 format: html
 tbl-colwidths: [15,85]
 ---
