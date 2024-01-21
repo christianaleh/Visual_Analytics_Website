@@ -1,11 +1,11 @@
 ---
-title: " ISSS608 Visual Analytics Is Fun for Me"
+title: "Christiana Lim - Aspiring Data Anlayst"
 format: html
 tbl-colwidths: [15,85]
 ---
 
 # Welcome !
 
-## This is Christiana's website for all Visual Analytics submissions
+## This website documents my on-going learning journey to be a Data Analyst 
 
-![](images/photo_2023-01-20_23-46-00.jpg){width="554"}
+![](images/photo_2023-01-20_23-46-00.jpg){width="400"}

@@ -1,11 +1,7 @@
 ---
-title: "About"
+title: "About Me"
 about:
   template: jolla
 ---
 
-About this site
-
-```{r}
-1 + 1
-```
+I am curious about data and the techniques that are needed to make sense of data in this increasingly data-overwhelmed world. I explore with data visualizations on Tableau , R and make sense of it with statistical analysis using various R packages.
