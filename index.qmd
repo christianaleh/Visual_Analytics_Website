@@ -6,6 +6,6 @@ tbl-colwidths: [15,85]
 
 # Welcome !
 
-## Documenting my on-going learning journey to be a Data Analyst 
+## Documenting my on-going learning journey to be a Data Analyst
 
-![](images/photo_2023-01-20_23-46-00.jpg){width="400"}
+![](images/photo_2024-02-01_15-53-44.jpg){fig-align="center"}
