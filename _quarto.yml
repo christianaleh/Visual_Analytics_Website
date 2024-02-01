@@ -37,12 +37,8 @@ website:
           href: "In-Class-Exercise/In-Class-Ex-07.html"
         - text: "In Class Exercise 8"
           href: "In-Class-Exercise/In-Class-Ex-08.html"
-        - text: "In Class Exercise 9"
-          href: "In-Class-Exercise/In-Class-Ex-09.html"
-    - text: "Geospatial"
-      menu:
-        - text: "In Class Exercise 2"
-          href: "Hands-On-Exercise/In-class-ex-2.html"
+        #- text: "In Class Exercise 9"
+          #href: "In-Class-Exercise/In-Class-Ex-09.html"
     right:
       - href: index.qmd
         text: Home
