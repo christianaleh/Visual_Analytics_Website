@@ -7,5 +7,3 @@ tbl-colwidths: [15,85]
 # Welcome !
 
 ## Documenting my on-going learning journey to be a Data Analyst
-
-![](images/photo_2024-02-01_15-53-44.jpg){fig-align="center"}
