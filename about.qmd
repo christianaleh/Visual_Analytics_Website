@@ -5,3 +5,7 @@ about:
 ---
 
 I am curious about data and the techniques that are needed to make sense of data in this increasingly data-overwhelmed world. I explore with data visualizations on Tableau , R and make sense of it with statistical analysis using various R packages.
+
+![](images/Snapshot of Geo Map of Trip Origin Locations  4 Nov 2023 at 02.23.13 pm.png)
+
+Above: One of my favourite images from a geospatial analysis project that I did on SAS Viya
