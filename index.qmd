@@ -1,9 +1,9 @@
 ---
-title: "Christiana Lim - Aspiring Data Anlayst"
+title: "Aspiring Data Anlayst"
 format: html
 tbl-colwidths: [15,85]
 ---
 
 # Welcome !
 
-## Documenting my on-going learning journey to be a Data Analyst
+### Documenting my on-going learning journey in Data Analytics here
