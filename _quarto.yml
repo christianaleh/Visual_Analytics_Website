@@ -5,6 +5,8 @@ website:
   title: "Data Analytics"
   navbar:
     left:
+    - text: "Capstone Project"
+      href: "Take Home Exercises/Take-home-Exercise-2.html"
     - text: "VA Take-Home Exercises"
       menu: 
         - text: "Take Home Exercise 1"

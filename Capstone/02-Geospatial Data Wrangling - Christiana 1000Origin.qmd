@@ -1,0 +1,654 @@
+---
+title: "1000 Origin "
+author: "Dr. Kam Tin Seong"
+format: html
+editor: visual
+execute: 
+  eval: true
+  echo: true
+  warning: false
+---
+
+## Loading the necessary R package
+
+Three R packages will be used in this exercise, they are:
+
+-   tidyverse for performing typical data science task such as importing and parsing csv file with readr functions, performing data wrangling with dplyr functions.
+-   [sf](https://r-spatial.github.io/sf/) for performing geospatial data science task such as importing geospatial data, convert aspatial data into geospatial data and wrangling geospatial data.
+-   [tmap](https://r-tmap.github.io/tmap/) for preparing geospatial mapping.
+
+```{r}
+pacman::p_load(tidyverse, sf, tmap, lubridate, kableExtra, skimr)
+```
+
+## Importing Geospatial Data
+
+In the code chunk below, [`st_read`](https://r-spatial.github.io/sf/reference/st_read.html) of [**sf**](https://r-spatial.github.io/sf/index.html) package is used to import hexagon shapefile into R and save it into sf simple polygon feature objects layer.Import updated hexagon (750)
+
+```{r}
+hexagon1 <- st_read(dsn = "hexagon", 
+                  layer = "hexagon2")
+hexagon1
+```
+
+Note that the output hexagon layer is in tibble data frame format.
+
+To learn more about simple features and sf tibble data frame, please refer to [Lesson 2: Wrangling Geospatial Data in R: sf approach and methods](https://is415-ay2022-23t2.netlify.app/lesson/lesson02/lesson02-wrangling_geospatial_data_in_r#/title-slide)
+
+## Handling Aspatial Data
+
+### Importing aspatial data
+
+In the code chunk below, [read_scv](https://readr.tidyverse.org/reference/read_delim.html) of [**readr**](https://readr.tidyverse.org/index.html) package is used to import and parse *od_gps.csv* into R and save the output into a tibble data frame format.
+
+```{r}
+od_gps <- read_csv("sandbox/aspatial/od_gps.csv") %>% 
+  mutate(weekday = wday(pingtimestamp, 
+       label = TRUE, 
+       week_start = 7),
+       origin_hour = hour(pingtimestamp), 
+       dest_hour = hour(max_pingtimestamp))
+od_gps
+```
+
+::: callout-note
+## Things to learn from the arguments above:
+
+-   [`wday()`]() is a function of [**lubridate**](https://lubridate.tidyverse.org/index.html) package that covert a time field into their respective day of the week.
+-   [`mutate()`](https://dplyr.tidyverse.org/reference/mutate.html) of dplyr package is use create a new field called *weekday* to store the values return by `wday()`
+:::
+
+### Creating a simple feature data frame from an aspatial data frame
+
+Next, the code chunk below converts *od_gps* data frame into a simple feature data frame by using `st_as_sf()` of **sf** packages
+
+```{r}
+org_sf <- st_as_sf(od_gps, 
+                   coords = c("rawlng",
+                              "rawlat"),
+                   crs=4326) %>%
+  st_transform(crs = 3414)
+org_sf
+```
+
+Notice that org_sf is in sf tibble data frame format now.
+
+::: callout-note
+## Things to learn from the arguments above:
+
+-   coords argument requires you to provide the column name of the x-coordinates first then followed by the column name of the y-coordinates.
+-   crs argument requires you to provide the coordinates system in epsg format. EPSG: 4326 is wgs84 Geographic Coordinate System and EPSG: 3414 is Singapore SVY21 Projected Coordinate System. You can search for other country's epsg code by referring to epsg.io.
+-   %\>% is used to nest st_transform() to transform the newly created simple feature data frame into svy21 projected coordinates system.
+:::
+
+## Point-in-Polygon Count
+
+Code chunk below is used to count the number of trip generate at an hexagon location.
+
+```{r}
+org_hex <- hexagon1 %>% 
+  mutate(`total_trip` = lengths(
+    st_intersects(hexagon1, org_sf)))
+
+org_hex
+```
+
+For Visualization: Notice that the output is a simple polygon feature data frame
+
+```{r}
+tmap_mode("plot")
+tm_shape(org_hex)+
+  tm_fill("total_trip",
+          n = 5,
+          style = "jenks") +
+  tm_borders(alpha = 0.5)
+```
+
+Column for Weekday: Monday
+
+```{r}
+org_weekday <- org_sf %>%
+  filter(weekday == "Mon")
+```
+
+```{r}
+org_hex <- org_hex %>% 
+  mutate(`Mon_trip` = lengths(
+    st_intersects(org_hex, org_weekday)))
+```
+
+Column for Weekday: Tuesday
+
+```{r}
+org_weekday <- org_sf %>%
+  filter(weekday == "Tue")
+```
+
+```{r}
+org_hex <- org_hex %>% 
+  mutate(`Tue_trip` = lengths(
+    st_intersects(org_hex, org_weekday)))
+```
+
+Column for Weekday: Wednesday
+
+```{r}
+org_weekday <- org_sf %>%
+  filter(weekday == "Wed")
+```
+
+```{r}
+
+org_hex <- org_hex %>% 
+  mutate(`Wed_trip` = lengths(
+    st_intersects(org_hex, org_weekday)))
+
+```
+
+Column for Weekday: Thursday
+
+```{r}
+org_weekday <- org_sf %>%
+  filter(weekday == "Thu")
+```
+
+```{r}
+org_hex <- org_hex %>% 
+  mutate(`Thu_trip` = lengths(
+    st_intersects(org_hex, org_weekday)))
+```
+
+Column for Weekday: Friday
+
+```{r}
+org_weekday <- org_sf %>%
+  filter(weekday == "Fri")
+```
+
+```{r}
+org_hex <- org_hex %>% 
+  mutate(`Fri_trip` = lengths(
+    st_intersects(org_hex, org_weekday)))
+
+```
+
+Creating weekend trips: Saturday
+
+```{r}
+org_weekday <- org_sf %>%
+  filter(weekday == "Sat")
+```
+
+```{r}
+org_hex <- org_hex %>% 
+  mutate(`Sat_trip` = lengths(
+    st_intersects(org_hex, org_weekday)))
+```
+
+Creating weekend trips: Sunday
+
+```{r}
+org_weekday <- org_sf %>%
+  filter(weekday == "Sun")
+```
+
+```{r}
+org_hex <- org_hex %>% 
+  mutate(`Sun_trip` = lengths(
+    st_intersects(org_hex, org_weekday)))
+```
+
+Creating origin_hour interval trips 3AM to 6AM:
+
+```{r}
+org_hour_int <- org_sf %>% 
+  filter(origin_hour %in% (3:6))
+```
+
+```{r}
+org_hex <- org_hex %>% 
+  mutate(`3to6_trip` = lengths(
+    st_intersects(org_hex, org_hour_int)))
+```
+
+Creating origin_hour interval trips 6AM to 9AM:
+
+```{r}
+org_hour_int <- org_sf %>% 
+  filter(origin_hour %in% (6:9))
+```
+
+```{r}
+org_hex <- org_hex %>% 
+  mutate(`6to9_trip` = lengths(
+    st_intersects(org_hex, org_hour_int)))
+```
+
+Creating origin_hour interval trips 9AM to 12Noon:
+
+```{r}
+org_hour_int <- org_sf %>% 
+  filter(origin_hour %in% (9:12))
+```
+
+```{r}
+org_hex <- org_hex %>% 
+  mutate(`9to12_trip` = lengths(
+    st_intersects(org_hex, org_hour_int)))
+```
+
+Creating origin_hour interval trips 12Noon to 3PM:
+
+```{r}
+org_hour_int <- org_sf %>% 
+  filter(origin_hour %in% (12:15))
+```
+
+```{r}
+org_hex <- org_hex %>% 
+  mutate(`12to15_trip` = lengths(
+    st_intersects(org_hex, org_hour_int)))
+```
+
+Creating origin_hour interval trips 3PM to 6PM:
+
+```{r}
+org_hour_int <- org_sf %>% 
+  filter(origin_hour %in% (15:18))
+```
+
+```{r}
+org_hex <- org_hex %>% 
+  mutate(`15to18_trip` = lengths(
+    st_intersects(org_hex, org_hour_int)))
+```
+
+Creating origin_hour interval trips 6PM to 9PM:
+
+```{r}
+org_hour_int <- org_sf %>% 
+  filter(origin_hour %in% (18:21))
+```
+
+```{r}
+org_hex <- org_hex %>% 
+  mutate(`18to21_trip` = lengths(
+    st_intersects(org_hex, org_hour_int)))
+```
+
+Creating origin_hour interval trips 9PM to 0 (12 AM) :
+
+```{r}
+org_hour_int <- org_sf %>% 
+  filter(origin_hour %in% (21:23) | origin_hour == 0)
+```
+
+```{r}
+org_hex <- org_hex %>% 
+  mutate(`21to0_trip` = lengths(
+    st_intersects(org_hex, org_hour_int)))
+```
+
+Creating origin_hour interval trips 0 (12 AM) to 3AM :
+
+```{r}
+org_hour_int <- org_sf %>% 
+  filter(origin_hour %in% (0:3))
+```
+
+```{r}
+org_hex <- org_hex %>% 
+  mutate(`0to3_trip` = lengths(
+    st_intersects(org_hex, org_hour_int)))
+```
+
+**Create Weekdays aggregate**
+
+```{r}
+org_wkday <- org_sf %>%
+  filter(weekday =='Mon'|weekday =="Tue"|weekday == 'Wed'|weekday == 'Thu'|weekday == 'Fri') 
+```
+
+```{r}
+
+org_hex <- org_hex %>% 
+  mutate(`weekday` = lengths(
+    st_intersects(org_hex, org_wkday)))
+org_hex
+```
+
+**Create Weekends aggregate**
+
+```{r}
+
+org_wkend <- org_sf %>%
+  filter(weekday =='Sat'|weekday =="Sun") 
+
+```
+
+```{r}
+org_hex <- org_hex %>% 
+  mutate(`weekend` = lengths(
+    st_intersects(org_hex, org_wkend)))
+org_hex
+```
+
+**Create Weekday Morning Peak**
+
+```{r}
+org_wkday_ampeak <- org_sf %>%
+  filter(weekday =='Mon'|weekday =="Tue"|weekday == 'Wed'|weekday == 'Thu'|weekday == 'Fri') %>%
+  filter(origin_hour %in% (6:9))
+```
+
+```{r}
+
+org_hex <- org_hex %>% 
+  mutate(`6to9_ampk` = lengths(
+    st_intersects(org_hex, org_wkday_ampeak)))
+org_hex
+```
+
+**Create Weekday Evening Peak**
+
+```{r}
+org_wkday_pmpeak <- org_sf %>%
+  filter(weekday =='Mon'|weekday =="Tue"|weekday == 'Wed'|weekday == 'Thu'|weekday == 'Fri') %>%
+  filter(origin_hour %in% (18:21))
+```
+
+```{r}
+
+org_hex <- org_hex %>% 
+  mutate(`6to9_pmpk` = lengths(
+    st_intersects(org_hex, org_wkday_pmpeak)))
+org_hex
+```
+
+**Create Weekend Morning Peak**
+
+```{r}
+
+org_wkend_ampeak <- org_sf %>%
+  filter(weekday == 'Sat'| weekday == 'Sun') %>%
+  filter(origin_hour %in% (6:9))
+```
+
+```{r}
+
+org_hex <- org_hex %>% 
+  mutate(`6to9_ampk_we` = lengths(
+    st_intersects(org_hex, org_wkend_ampeak)))
+org_hex
+```
+
+**Create Weekend Evening Peak**
+
+```{r}
+
+org_wkend_pmpeak <- org_sf %>%
+  filter(weekday == 'Sat'| weekday == 'Sun') %>%
+  filter(origin_hour %in% (18:21))
+```
+
+```{r}
+
+org_hex <- org_hex %>% 
+  mutate(`6to9_pmpk_we` = lengths(
+    st_intersects(org_hex, org_wkend_pmpeak)))
+org_hex
+```
+
+## **Loading Socio-Economic Data**
+
+## **HDB Density**
+
+1.  Load HDB Dataframe
+
+```{r}
+hdb_gps <- read_csv("C:/Users/chris/Singapore Management University/KAM Tin Seong - Christiana LIM EN HUI/data/dataset (poi and others)/hdb.csv") 
+```
+
+2.  HDB sf
+
+```{r}
+hdb_sf <- st_as_sf(hdb_gps,
+                   coords = c("lng","lat"),
+                   crs=4326) %>%
+  st_transform(crs = 3414)   
+
+hdb_sf
+```
+
+3.  Count HDBS according to origin_hex
+
+```{r}
+org_hex <- org_hex %>%       
+  mutate(`hdb_no` = lengths(st_intersects(hexagon1, hdb_sf)))   
+
+org_hex
+```
+
+4.  Count Total Dwelling places according to origin_hex
+
+```{r}
+
+dwelling_intersect <- st_intersection(hdb_sf, hexagon1)%>% 
+  rename(dwelling_id = hexID)
+
+```
+
+```{r}
+dwelling_intersect <- dwelling_intersect %>%
+  st_drop_geometry() %>%
+  group_by(dwelling_id) %>% 
+  summarise(tot_dwelling = sum(total_dwelling_units)) 
+```
+
+```{r}
+
+org_hex <- left_join(org_hex,dwelling_intersect, 
+                            by = c("hexID" = "dwelling_id"))
+
+```
+
+Replace Nas with 0 in the new column
+
+```{r}
+org_hex <- mutate(org_hex, tot_dwelling = ifelse(is.na(tot_dwelling), 0, tot_dwelling))
+
+```
+
+## MRT Count
+
+1.  Load MRT Dataframe
+
+```{r}
+mrt_gps <- read_csv("C:/Users/chris/Singapore Management University/KAM Tin Seong - Christiana LIM EN HUI/data/dataset (poi and others)/mrt.csv") 
+```
+
+2.  MRT sf
+
+```{r}
+mrt_sf <- st_as_sf(mrt_gps,
+                   coords = c("lng","lat"),
+                   crs=4326) %>%      
+  st_transform(crs = 3414)   
+
+mrt_sf
+```
+
+3.  Count Mrts according to origin_hex
+
+```{r}
+
+org_hex <- org_hex %>%       
+  mutate(`mrt_no` = lengths(     
+    st_intersects(hexagon1, mrt_sf)))   
+
+
+org_hex
+```
+
+## POI Count
+
+1.  Load POI Dataframe
+
+```{r}
+poi_gps <- read_csv("C:/Users/chris/Singapore Management University/KAM Tin Seong - Christiana LIM EN HUI/data/dataset (poi and others)/poi.csv") 
+```
+
+2.  POI sf
+
+```{r}
+poi_sf <- st_as_sf(poi_gps,
+                   coords = c("lng","lat"),
+                   crs=4326) %>%      
+  st_transform(crs = 3414)   
+
+poi_sf
+```
+
+3.  Count POIs according to origin_hex
+
+```{r}
+
+org_hex <- org_hex %>%       
+  mutate(`poi_no` = lengths(     
+    st_intersects(hexagon1, poi_sf)))   
+
+org_hex
+```
+
+## Business Count
+
+1.  Import Business geospatial data
+
+```{r}
+business <- st_read(dsn = "C:/Users/chris/Singapore Management University/KAM Tin Seong - Christiana LIM EN HUI/data/Sandbox/geospatial/Business.shp",layer = "Business")  
+business
+```
+
+2.  Count Businesses
+
+```{r}
+org_hex <- org_hex %>%    
+  mutate(`biz_no` = lengths(
+    st_intersects(hexagon1, business))) 
+
+org_hex
+```
+
+## Entertainment Count
+
+1.  Import Entertainment geospatial data
+
+```{r}
+entertainment <- st_read(dsn = "C:/Users/chris/Singapore Management University/KAM Tin Seong - Christiana LIM EN HUI/data/Sandbox/geospatial/entertn.shp",layer = "entertn")   
+entertainment
+```
+
+2.  Count Entertainment
+
+```{r}
+org_hex <- org_hex %>%       
+  mutate(`ent_no` = lengths(     
+    st_intersects(hexagon1, entertainment)))   
+
+org_hex
+```
+
+## F&B Count
+
+1.  Import F&B geospatial data
+
+```{r}
+fnb <- st_read(dsn = "C:/Users/chris/Singapore Management University/KAM Tin Seong - Christiana LIM EN HUI/data/Sandbox/geospatial/F&B.shp",layer = "F&B")   
+fnb
+```
+
+2.  Count F&B
+
+```{r}
+org_hex <- org_hex %>%       
+  mutate(`fnb_no` = lengths(     
+    st_intersects(hexagon1, fnb)))   
+
+org_hex
+```
+
+## FinServ Count
+
+1.  Import FinServ geospatial data
+
+```{r}
+finserv <- st_read(dsn = "C:/Users/chris/Singapore Management University/KAM Tin Seong - Christiana LIM EN HUI/data/Sandbox/geospatial/FinServ.shp",layer = "FinServ")   
+finserv
+```
+
+2.  Count FinServ
+
+```{r}
+org_hex <- org_hex %>%       
+  mutate(`finserv_no` = lengths(     
+    st_intersects(hexagon1, finserv)))   
+
+org_hex
+```
+
+## Retails Count
+
+```{r}
+retail <- st_read(dsn = "C:/Users/chris/Singapore Management University/KAM Tin Seong - Christiana LIM EN HUI/data/Sandbox/geospatial/Retails.shp",layer = "Retails")  
+
+retail
+```
+
+```{r}
+org_hex <- org_hex %>%    
+  mutate(`retail_no` = lengths(
+    st_intersects(hexagon1, retail))) 
+
+org_hex
+```
+
+## Export out the sf tibble data frame into shapefile
+
+```{r}
+st_write(org_hex, "origin_hex1000.shp", append = FALSE)
+```
+
+## Load data sf file to dataframe (Post append)
+
+```{r}
+
+#origin_hex750 <- st_read(dsn = "C:/Users/chris/Singapore Management University/KAM Tin Seong - Christiana LIM EN HUI/data/origin_hex750.shp",layer = "origin_hex750.shp")  
+
+#origin_hex750
+```
+
+## Descriptive Stats
+
+```{r}
+#summary(mrt_gps)%>% kable() %>% kable_styling()
+```
+
+```{r}
+#skim(origin_hex)
+
+#summary(origin_hex)%>% kable() %>% kable_styling()
+```
+
+```{r}
+#skim(hdb_gps)
+#summary(hdb_gps)%>% kable() %>% kable_styling()
+```
+
+```{r}
+#tmap_mode("plot")
+#tm_shape(origin_hex)+
+ # tm_fill("retail_no",
+      #    n = 5,
+         # style = "jenks") +
+  #tm_borders(alpha = 0.5)
+```

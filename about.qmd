@@ -5,7 +5,3 @@ about:
 ---
 
 I am curious about data and the techniques that are needed to make sense of data in this increasingly data-overwhelmed world. I explore with data visualizations on Tableau , R and make sense of it with statistical analysis using various R packages.
-
-![](images/Snapshot of 9 to 12 noon (Peak) trips at Destination (sized by Saturday trips) 18 Dec 2023 at 05.11.55 pm.png)
-
-Above: One of my favourite images from a geospatial analysis project that I did on SAS Viya
